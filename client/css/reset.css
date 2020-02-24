@@ -1,0 +1,34 @@
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*, .van-popover {
+    box-sizing: border-box;
+}
+
+html {
+    display: block;
+    color: -internal-root-color;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #505050;
+    font: 12px -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
