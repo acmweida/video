@@ -5,7 +5,7 @@
         <i class="bilifont bili-icon_dingdao_sousuo"></i>
       </a>
     </div>
-    <Login v-if="!isLogin" ></Login>
+    <Login v-if="!loginState" ></Login>
     <Singin v-else></Singin>
     <Upload></Upload>
   </div>
@@ -25,6 +25,19 @@ export default {
     Upload,
     Login,
     Singin
+  },
+  methods:{
+    
+  },
+  meteor:{
+    loginState() {
+        if (Session.get("isLogin") === undefined ) {
+          Session.set("isLogin",false); 
+        }  else {
+          this.isLogin = Session.get("isLogin");
+        }
+        return this.isLogin;
+    }
   }
 };
 </script>

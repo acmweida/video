@@ -1,0 +1,9 @@
+{
+    "contentType":{
+        "Home":"Home",
+        "Login":"Login",
+        "register":"register"
+    },
+    "content":"contentType"
+
+}

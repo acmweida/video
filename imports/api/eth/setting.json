@@ -1,0 +1,17 @@
+{
+    "eth":{
+        "address":"http://127.0.0.1:7545"
+    },
+    "contracts":{
+        "InfoDB":"0x7B992197444907D514bEb588e7508fCd347499b5",
+        "ResourceDB":"0x323e3c636aE89E773d071A82C276A0a62F40599d",
+        "OrderDB":"0x8Ad5458E3b877573ed454a9EAe41312d539dD67F",
+        "CenterControl":"0x0FcB7241e876e23ad10EDca2D3AA36B7090B72da",
+        "AdminModule":"0x1FC46b67Fc8186fC766b970b8f8Ca9032b553D31",
+        "AuthorModule":"0xe9f53Bd8c43614180008eCf81881286a326A6d45",
+        "UserModule":"0x1A7b1b9F287DD805Ac3F970257bF0edB619053f3",
+        "DeployDB":"0x346471D02a27B2564115919fA6Afca6d4D3cd699",
+        "DeployCenter":"0xBa8989bD6CF1b3C68752524E3DFf7f59EbA14f11",
+        "DeployUser":"0xC1A5C6d5F1a9065e5bEED060546Da21BCBc117E7"
+    }
+}
