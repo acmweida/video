@@ -1,5 +1,3 @@
-User = new Mongo.Collection('USER');
-
 export const userLogin = {
     name : 'user.login',
     validate(args) {
@@ -9,13 +7,8 @@ export const userLogin = {
         }).validate(args)
     },
     run({eth_account,password}) {
-        const user = User.findOne({eth_account:eth_account});
+        const user = User.findOne({eth_account:eth_account,password:password});
         return { exist: true,user:user};
-        // if (user != null && user.password === this.password) {
-        //     return { exist: true,user:user};
-        // } else {
-        //     return { exist:false,user:null};
-        // }
     },
     call(args,callback) {
         const options = {

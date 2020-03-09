@@ -92,7 +92,6 @@ export default {
               alert(err);
             } else {
               if (res.exist) {
-                // user = res;
                 Session.set("isLogin",true);
                 Session.set("user",res.user);
                 Session.set(Global.content,Global.contentType.Home);

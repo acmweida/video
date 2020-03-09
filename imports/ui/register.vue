@@ -55,8 +55,8 @@
 
 <script>
 import Globle from "../setting/setting";
-import DeployUser from "../api/eth/abi/DeployUser.json"
-
+import DeployUser from "../api/eth/abi/DeployUser";
+import Web3 from "Web3";
 
 const ERROR_INFO = {
   emailFormatError: "邮箱格式错误",
@@ -90,71 +90,35 @@ export default {
       //   this.emailError = ERROR_INFO.passworFormatError;
       //   return;
       // }
-      
       /*
         检查Email是否以注册
       */
-
       /*
         注册
      */
-    // console.log(web3);
+      // console.log(web3);
+      if (typeof web3 != "undefined") {
+        web3 = new Web3(web3.currentProvider);
+      } else {
+        web3 = new Web3(
+          new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+        );
+      }
 
-      //     Meteor.call("getContract",{contractName:"InfoDB"},(err,res) => {
-      //   console.log(res);
-     // r.address, o.address, i.address,c.address, ad.address ,au.address,us.address
-        //      "InfoDB":"0x7B992197444907D514bEb588e7508fCd347499b5",
-        // "ResourceDB":"0x323e3c636aE89E773d071A82C276A0a62F40599d",
-        // "OrderDB":"0x8Ad5458E3b877573ed454a9EAe41312d539dD67F",
-        // "CenterControl":"0x0FcB7241e876e23ad10EDca2D3AA36B7090B72da",
-        // "AdminModule":"0x1FC46b67Fc8186fC766b970b8f8Ca9032b553D31",
-        // "AuthorModule":"0xe9f53Bd8c43614180008eCf81881286a326A6d45",
-        // "UserModule":"0x1A7b1b9F287DD805Ac3F970257bF0edB619053f3",
-        // "DeployDB":"0x346471D02a27B2564115919fA6Afca6d4D3cd699",
-        // "DeployCenter":"0xBa8989bD6CF1b3C68752524E3DFf7f59EbA14f11",
-        // "DeployUser":"0xC1A5C6d5F1a9065e5bEED060546Da21BCBc117E7"
-      // });
-
-      console.log(web3.version)
-      Meteor.call("getContract",{contractName:"InfoDB"},(err,res) => {
-        console.log(res.DeployUser);
-        console.log(web3);
-         var DeployUserCon = new web3.eth.Contract(DeployUser.abi, res.DeployUser, {
-          from: '0x482ba190Ce6f932808A745173e733ccB19aE9B5e', // default from address
-          gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-        });
-        console.log(DeployUserCon);
-        // var DeployUserInst = DeployUserCon.at(res.DeployUser);
-        // console.log(DeployUserInst);
-        // // DeployUserInst.init()
-        // DeployUserCon.methods.init(
-        //   res.ResourceDB,res.OrderDB,res.InfoDB,res.CenterControl,res.AdminModule,res.AuthorModule,res.UserModule
-        // ).call(
-        //   {from:"0x482ba190Ce6f932808A745173e733ccB19aE9B5e"},
-        //   function(error,res) { 
-        //     console.log(error);
-        //     console.log(res);
-        //   }
-        // );
+      console.log(web3.version);
+      // web3.eth.getAccounts().then(console.log);
+      
+      // console.log(web3.version);
+      Meteor.call(
+        "user.register",
+         {
+            eth_account: this.email,
+            password: this.password
+        },
+         (err, res) => {
+          console.log(res); 
+          console.log(err);
       });
-      // console.log(result);
-      // var  DeployUserCon  = new web3.eth.contract(DeployUser.abi,result.DeployUser,{from:"0x482ba190Ce6f932808A745173e733ccB19aE9B5e"});
-      //    console.log(DeployUserCon.methods);
-   //   Meteor.call("user.newAccount", null, (err, res) => {
-   //     console.log(res);
-        // if (err) {
-        //   alert(err);
-        // } else {
-        //   if (res.exist) {
-        //     // user = res;
-        //     Session.set("isLogin", true);
-        //     Session.set("user", res.user);
-        //     Session.set(Global.content, Global.contentType.Home);
-        //   } else {
-        //     this.loginError = true;
-        //   }
-        // }
-      // });
     }
   }
 };

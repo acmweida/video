@@ -1,17 +1,18 @@
 {
     "eth":{
-        "address":"http://127.0.0.1:7545"
+        "address":"http://127.0.0.1:7545",
+        "net-id":5777
     },
     "contracts":{
-        "InfoDB":"0x7B992197444907D514bEb588e7508fCd347499b5",
-        "ResourceDB":"0x323e3c636aE89E773d071A82C276A0a62F40599d",
-        "OrderDB":"0x8Ad5458E3b877573ed454a9EAe41312d539dD67F",
-        "CenterControl":"0x0FcB7241e876e23ad10EDca2D3AA36B7090B72da",
-        "AdminModule":"0x1FC46b67Fc8186fC766b970b8f8Ca9032b553D31",
-        "AuthorModule":"0xe9f53Bd8c43614180008eCf81881286a326A6d45",
-        "UserModule":"0x1A7b1b9F287DD805Ac3F970257bF0edB619053f3",
-        "DeployDB":"0x346471D02a27B2564115919fA6Afca6d4D3cd699",
-        "DeployCenter":"0xBa8989bD6CF1b3C68752524E3DFf7f59EbA14f11",
-        "DeployUser":"0xC1A5C6d5F1a9065e5bEED060546Da21BCBc117E7"
+        "InfoDB":"0x314921930dbDE9E1c8F532fC4123BbEEc30A3A3c",
+        "ResourceDB":"0xb203464C4661e10364405093215ee7d0478A4BB4",
+        "OrderDB":"0x46bEc43E898028F9D45489FeF56f8bF14258cCC7",
+        "CenterControl":"0xe7Bc1b6b54A96032C3FDa92aDDb2ba0575Af1A3A",
+        "AdminModule":"0xfa064ba33CBAaFF639e16B0Fb0085e697F9690FB",
+        "AuthorModule":"0xe071bb73001cabaAe5bC51d7929C9C6d87442769",
+        "UserModule":"0x809F53E693f940CC3030dB17FDa2CEb91Fe7d522",
+        "DeployDB":"0x165C0C2bAC98E5C087278fdBeB4A93AdB9d22897",
+        "DeployCenter":"0x68717F1f485d74ef3c64be0CB91C2261209Acf5B",
+        "DeployUser":"0x80c7880b0b1B40e2618c854bF76777b18cDf3618"
     }
-}
+}   
