@@ -1,106 +1,122 @@
 <template>
-  <div id="login-app">
-    <div data-v-0c98c25d class="login-app bottom-filling">
-      <div data-v-0c98c25d>
-        <div data-v-0c98c25d class="top-banner"></div>
-        <div data-v-0c98c25d class="title-line">
-          <span class="tit">登录</span>
-        </div>
-        <div data-v-0c98c25d class="login-box clearfix">
-          <div data-v-0c98c25d class="login-right">
-            <div data-v-0c98c25d class="form-login">
-              <div id="geetest-wrap" class="input-box">
-                <div>
-                  <div style>
-                    <div class="item username status-box">
-                      <input
-                        type="text"
-                        value
-                        placeholder="你的账号"
-                        id="login-username"
-                        maxlength="50"
-                        autocomplete="off"
-                        class
-                        v-model="eth_account"
-                      />
-                      <span class="status"></span>
-                      <div class="text clearfix">
-                        <p class="tips"></p>
-                      </div>
-                      <!---->
-                    </div>
-                    <div class="item password status-box">
-                      <input
-                        type="password"
-                        placeholder="密码"
-                        v-model="password"
-                        id="login-passwd"
-                        class
-                      />
-                      <span class="status"></span>
-                      <div class="text clearfix">
-                        <p v-if="loginError" class="tips">账号或密码错误</p>
-                      </div>
-                    </div>
-                    <!---->
-                    <div class="item gc clearfix">
-                      <!---->
-                    </div>
-                  </div>
-                  <div class="btn-box" v-on:click="login">
-                    <a class="btn btn-login">登录</a>
-                  </div>
-                  <!---->
-                </div>
+  <div>
+    <div data-v-0c98c25d class="top-banner"></div>
+    <div class="title-line">
+      <span class="tit">登录</span>
+    </div>
+    <div class="ui grid" style="max-width:600px;margin:auto;margin-top:60px;">
+      <form class="ui large form wid-ful">
+        <div class="ui segments">
+          <div class="ui segment" style="padding: 20px;">
+            <div class="field">
+              <div class="ui left icon input">
+                <input v-model="email" type="text" name="username" placeholder="邮箱" />
               </div>
-              <!---->
+            </div>
+            <div class="field">
+              <div class="ui left icon input">
+                <input v-model="privatekey" type="password" name="privatekey" placeholder="私钥" />
+              </div>
+            </div>
+            <div clas="field">
+              <div style="color:red;" v-if="loginError">账号或私钥不存在</div>
+            </div>
+            <!-- <div class="field">
+              <div class="ui slider checkbox">
+                <input type="checkbox" name="rememberme" />
+                <label class="text">记得我</label>
+              </div>
+            </div>-->
+            <div id="loginbutton" class="ui fluid labeled small button" tabindex="0">
+              <button
+                type="button"
+                v-on:click="login"
+                class="ui fluid red right labeled dtube icon submit button"
+              >
+                <div style="display:inline-block;padding: 0.8em 1em;">登录</div>
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-import Global from '../setting/setting'
+import Global from "../setting/setting";
+import BigNumber from "bignumber";
+import EthUtil from "ethereumjs-util";
+import Web3 from "Web3";
+
 export default {
   data() {
     return {
-      eth_account: "",
-      password: "",
+      email: "",
+      privatekey: "",
       loginError: false
     };
   },
   methods: {
     login: function() {
-      console.log(this.eth_account);
-      console.log(this.password);
-      if (
-        this.eth_account.trim().length > 0 &&
-        this.eth_account.trim().length > 0
-      ) {
+      // console.log(this.eth_account);
+      // console.log(this.privatekey);
+      var remail = this.email.replace(/\s/g, "");
+      var rprivatekey = this.privatekey.replace(/\s/g, "");
+
+
+      if (rprivatekey.length == 64) {
+        if (typeof web3 != "undefined") {
+          web3 = new Web3(web3.currentProvider);
+        } else {
+          web3 = new Web3(
+            new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+          );
+        }
+
+        let publicKey = EthUtil.privateToPublic(new Buffer(rprivatekey, "hex"));
+        let publicKeyString = publicKey.toString("hex");
+
+   //     console.log(publicKeyString);
+
         Meteor.call(
           "user.login",
           {
-            eth_account: this.eth_account,
-            password: this.password
+            email: remail,
+            publicKey: publicKeyString
           },
-          (err, res) => {
-            console.log(res);
+          function(err, res) {
+       //     console.log("callback");
             if (err) {
               alert(err);
             } else {
               if (res.exist) {
-                Session.set("isLogin",true);
-                Session.set("user",res.user);
-                Session.set(Global.content,Global.contentType.Home);
+                // console.log(this.loginSess);
+                Session.set("isLogin", res);
+                // console.log("ssss");
+                let address = EthUtil.pubToAddress(publicKey).toString("hex");
+                Session.set("user.address", address);
               } else {
-                 this.loginError = true;
+                this.loginError = true;
               }
             }
           }
         );
+
+   
+        var userinfo = Session.get("isLogin");
+        /**
+         * to 回调会在判断之后 需要两成登录
+         */
+        var userinfo = Session.get("isLogin");
+       // console.log("userinfo：" + userinfo);
+        if (userinfo && userinfo.exist) {
+          // console.log("sss")
+          this.$router.replace("/");
+        }
+     //   console.log("ssss");
+      } else {
+        this.loginError = true;
       }
     }
   }

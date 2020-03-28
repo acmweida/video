@@ -4,12 +4,14 @@ export const userRegister = {
     name : 'user.register',
     validate(args) {
         new SimpleSchema({
-            eth_account:{type:String},
-            password:{type:String}
+            account:{type:String},
+            publicKey:{type:String},
+            email:{type:String}
         }).validate(args)
     },
-    run({eth_account,password}) {
-        return User.insert({account:eth_account,password:password}); 
+    run({account,publicKey,email}) {
+        // console.log(publicKey)
+        return User.insert({account:account,publicKey:publicKey,email:email}); 
     },
     call(args,callback) {
         const options = {

@@ -1,5 +1,5 @@
 <template>
-     <div class="user-con signin">
+  <!-- <div class="user-con signin">
             <div data-v-7230af51 class="item">
               <span data-v-7230af51>
                 <div
@@ -10,7 +10,7 @@
                   tabindex="0"
                   style="width: 280px; display: none;"
                 >
-                  <!---->
+                  
                   <div data-v-7230af51 class="vp-container">
                     <a data-v-7230af51 href="//space.bilibili.com" target="_blank" class="avatar">
                       <div data-v-7230af51 class="avatar-decorate-empty"></div>
@@ -21,7 +21,7 @@
                         class="avatar-img"
                       />
                       <svg data-v-7230af51 aria-hidden="true" class="svg-icon vip-icon">
-                        <!---->
+                      
                       </svg>
                     </a>
                     <p
@@ -29,7 +29,7 @@
                       class="nickname nickname--"
                       style="padding-top: 42px;"
                     >回到古代搞活动</p>
-                    <!---->
+                  
                     <div data-v-7230af51 class="coins">
                       <div data-v-7230af51 class="coins-container">
                         <div data-v-7230af51 class="info">
@@ -46,7 +46,7 @@
                           </a>
                         </div>
                       </div>
-                      <!---->
+                     
                     </div>
                     <div data-v-7230af51 class="counts">
                       <a
@@ -209,17 +209,17 @@
               <div data-v-7adc35f6 data-v-cba1b22a class="nav-item">
                 <div data-v-7adc35f6 class="t">
 
-                  <!---->
+                 
                   <a
                     data-v-cba1b22a
                     data-v-7adc35f6
                     href="//message.bilibili.com/new"
                     target="_blank"
                   >
-                    <span data-v-cba1b22a data-v-7adc35f6 class="name">消息</span>
+                    <span data-v-cba1b22a data-v-7adc35f6 class="name"></span>
                   </a>
                 </div>
-                <!---->
+              
                 <div data-v-7adc35f6 class="i-frame" style="display: none;">
                   <iframe
                     data-v-7adc35f6
@@ -241,7 +241,7 @@
                 >
                   <span data-v-00163514>
                     <span data-v-00163514 class="name">收藏</span>
-                    <!---->
+                  
                   </span>
                 </div>
               </span>
@@ -260,11 +260,42 @@
                 </div>
               </span>
             </div>
-          </div>
+  </div>-->
+
+  <div class="right floated menu">
+    <div class="ui item top right floated dropdown dropdownnotification">
+      <img alt style="width:32px;height:32px;" src="/static/images/nouser.png" />
+    </div>
+    <div
+      class="ui item top right floated dropdown dropdownnotification"
+      tabindex="0"
+    >
+      <!-- <i id="notification" class="alarm icon" style="font-size:1.3em; margin:0;"></i> -->
+      <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">消息</h4>
+    </div>
+    <div
+      class="ui item top right floated dropdown dropdownnotification"
+      tabindex="0"
+    >
+      <!-- <i id="notification" class="alarm icon" style="font-size:1.3em; margin:0;"></i> -->
+      <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">收藏</h4>
+    </div>
+    <div
+      class="ui item top right floated dropdown dropdownsettings needsclick"
+      style="float: right;"
+      tabindex="0"
+    >
+      <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0; ">历史</h4>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-    
-}
+export default {};
 </script>
+
+<style scoped>
+h4 {
+  color: white;
+}
+</style>

@@ -1,54 +1,50 @@
 <template>
-  <div id="app" class="bottom-filling">
-    <div>
-      <div class="top-banner"></div>
-      <div class="title-line">
-        <span class="tit" style="font-size: 38px;">注册</span>
-      </div>
-      <div class="register-container">
-        <form id="registerForm" method="post" onsubmit="return false;" class="report-wrap-module">
-          <div class="form-group">
-            <div class="el-input">
-              <input
-                type="text"
-                autocomplete="off"
-                placeholder="邮箱"
-                class="el-input__inner"
-                v-model="email"
-              />
+  <div>
+    <div data-v-0c98c25d class="top-banner"></div>
+    <div class="title-line">
+      <span class="tit">注册</span>
+    </div>
+    <div class="ui grid" style="max-width:600px;margin:auto;margin-top:60px;">
+      <form class="ui large form wid-ful">
+        <div class="ui segments">
+          <div class="ui segment" style="padding: 20px;">
+            <div class="field">
+              <div class="ui left icon input">
+                <input
+                  v-model="account"
+                  type="text"
+                  name="username"
+                  placeholder="用户名(长度大于等于6小于等于18)"
+                />
+              </div>
             </div>
-            <p class="error-message">{{ emailError }}</p>
-          </div>
-          <div class="register-hidden-gruop">
-            <div class="safe_window" style="display: none;">
-              <!-- <p>安全系数</p>
-              <div class="a_pw"></div>-->
+            <div class="field">
+              <div class="ui left icon input">
+                <input v-model="email" type="text" name="email" placeholder="邮箱" />
+              </div>
+            </div>
+            <!-- <div class="field">
+              <div class="ui left icon input">
+                <input v-model="email" type="text" name="password" placeholder="密码：用于" />
+              </div>
+            </div>-->
+            <div clas="field">
+              <div style="color:red;">
+                <p>{{emailError}}</p>
+              </div>
+            </div>
+            <div id="loginbutton" class="ui fluid labeled small button" tabindex="0">
+              <button
+                type="button"
+                v-on:click="register"
+                class="ui fluid red right labeled dtube icon submit button"
+              >
+                <div style="display:inline-block;padding: 0.8em 1em;">注册</div>
+              </button>
             </div>
           </div>
-          <div class="form-group">
-            <div class="el-input">
-              <input
-                v-model="password"
-                type="password"
-                autocomplete="off"
-                placeholder="密码（6-16个字符组成，区分大小写）"
-                class="el-input__inner"
-              />
-            </div>
-            <p class="error-message"></p>
-          </div>
-          <div class="form-group register-hidden-gruop text-right"></div>
-          <div class="form-group">
-            <button
-              v-on:click="register"
-              type="button"
-              class="el-button btn-full el-button--primary"
-            >
-              <span>注册</span>
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -56,20 +52,23 @@
 <script>
 import Globle from "../setting/setting";
 import DeployUser from "../api/eth/abi/DeployUser";
+import BigNumber from "bignumber";
+import EthUtil from "ethereumjs-util";
 import Web3 from "Web3";
+// import Wallet from 'ethereumjs-wallet'
 
 const ERROR_INFO = {
   emailFormatError: "邮箱格式错误",
   emailExist: "邮箱已注册",
-  passworFormatError: "密码格式错误"
+  passworFormatError: "用户名格式错误"
 };
 
 export default {
   data() {
     return {
       email: "",
-      password: "",
-      emailError: ""
+      account: "",
+      emailError: " "
     };
   },
   methods: {
@@ -78,25 +77,46 @@ export default {
     },
     register: function() {
       // // console.log("xxxx");
-      // var emailRegix = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-      // var res = emailRegix.test(this.email);
-      // if (!res) {
-      //   this.emailError = ERROR_INFO.emailFormatError;
-      //   return;
-      // }
-      // if (
-      //   !(this.password.trim().length >= 6 && this.password.trim().length <= 16)
-      // ) {
-      //   this.emailError = ERROR_INFO.passworFormatError;
-      //   return;
-      // }
+      var emailRegix = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+      var res = emailRegix.test(this.email);
+      if (!res) {
+        this.emailError = ERROR_INFO.emailFormatError;
+        return;
+      }
+      if (
+        !(this.account.trim().length >= 6 && this.account.trim().length <= 16)
+      ) {
+        this.emailError = ERROR_INFO.passworFormatError;
+        return;
+      }
+
       /*
         检查Email是否以注册
       */
       /*
         注册
-     */
-      // console.log(web3);
+    //  */
+      var hasRegister;
+      Meteor.call(
+        "user.hasRegister",
+        {
+          email: this.email
+        },
+        function(err, res) {
+          console.log(res);
+          hasRegister = res;
+          //return res; //hasRegister = res;
+        }
+      );
+
+      //console.log(hasRegister);
+      if (hasRegister) {
+        this.emailError = ERROR_INFO.emailExist;
+        return;
+      }
+
+      //   this.emailError = " ";
+
       if (typeof web3 != "undefined") {
         web3 = new Web3(web3.currentProvider);
       } else {
@@ -105,20 +125,53 @@ export default {
         );
       }
 
-      console.log(web3.version);
-      // web3.eth.getAccounts().then(console.log);
-      
-      // console.log(web3.version);
+      // var newAccount = web3Util.createAccount();
+      var newAccount = web3.eth.accounts.create(web3.utils.randomHex(32));
+      // console.log(newAccount);
+
+      // let privatekey = new Buffer( newAccount.privateKey,'hex');
+      let publicKey = EthUtil.privateToPublic(
+        EthUtil.toBuffer(newAccount.privateKey)
+      );
+      //  let publicKey = EthUtil.privateToPublic(EthUtil.toBuffer("0xa1b6bedba8993ee1a03fb15003538986f42f08b8ff243e1def94aa3b76adf5ef"));
+      // console.log(newAccount.privateKey.length)
+      // console.log(publicKey.toString('hex'));
+
+      let publicKeyString = publicKey.toString("hex");
+      // console.log(publicKeyString)
+      /**
+       * todo:邮箱发送
+       */
+
       Meteor.call(
         "user.register",
-         {
-            eth_account: this.email,
-            password: this.password
+        {
+          account: this.account,
+          publicKey: publicKeyString,
+          email: this.email
         },
-         (err, res) => {
-          console.log(res); 
-          console.log(err);
-      });
+        function(err, res) {
+          if (res) {
+            Session.set("isLogin", res.user);
+            let address = EthUtil.pubToAddress(publicKey).toString("hex");
+            Session.set("user.address", address);
+            return;
+          }
+          // console.log(res);
+          // console.log(err);
+          toastr.error(
+            '注册失败,请联系管理员',
+            '错误'
+          );
+          return;
+        }
+      );
+       var userinfo = Session.get('isLogin');
+        if ( userinfo.exist ) {
+          // console.log("sss")
+          this.$router.replace("/");
+        }
+       
     }
   }
 };
@@ -291,7 +344,6 @@ export default {
   padding: 12px 20px;
   font-size: 14px;
   border-radius: 4px;
-  /* cursor: not-allowed; */
   background-image: none;
   width: 100%;
   height: 40px;

@@ -1,9 +1,8 @@
 {
-    "contentType":{
-        "Home":"Home",
-        "Login":"Login",
-        "register":"register"
-    },
-    "content":"contentType"
+    "IPFS":{
+        "api_base_url":"http://139.196.92.62:5001",
+        "port":5001,
+        "address":"http://139.196.92.62"
+    }
 
 }
