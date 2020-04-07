@@ -93,7 +93,15 @@
                       <i class="cloud upload icon red" style="background:white; opacity:1;"></i>
                     </a>
                   </label>
-                  <input type="file" id="snapFile" style="display: none;" />
+                  <form enctype="multipart/form-data" id="pictrueinfp">
+                    <input
+                      type="file"
+                      id="snapFile"
+                      style="display: none;"
+                      v-on:click="uploadsnap"
+                      v-on:change="doUploadSnap"
+                    />
+                  </form>
                 </div>
               </div>
               <UploadFilefrom></UploadFilefrom>
@@ -104,7 +112,7 @@
                 type="button"
                 style="margin-bottom:10px;"
               >
-                <div style="display:inline-block;padding: 0.8em 1em;">PUBLISH VIDEO</div>
+                <div style="display:inline-block;padding: 0.8em 1em;" v-on:click="publish">PUBLISH VIDEO</div>
                 <!-- <i class="fire icon red" style="background: white;opacity: 1;"></i> -->
                 <i
                   class="icon white loading spinner dsp-non"
@@ -122,11 +130,14 @@
 <script>
 import UploadFilefrom from "./uploadfileform/uploadfileform";
 import UploadVideoProgress from "./uploadvideoprogress/uploadvideoprogress";
-import { IpfsUtil } from "../../../api/ipfs/ipfs";
+import Web3 from "Web3";
+import UploadUtil from "./UploadUtil";
+import "../../../util/translate";
+import IpfsUtil from "../../../api/ipfs/ipfs";
 export default {
   data() {
     return {
-        UPLOAD_UPLOADING_VIDEO: "上传视频",
+      UPLOAD_UPLOADING_VIDEO: "上传视频",
       UPLOAD_UPLOADING_SNAP: "上传截图",
       UPLOAD_UPLOAD_FILE: "选择一个视频进行上载",
       UPLOAD_TAKE_SNAP: "截图",
@@ -142,7 +153,6 @@ export default {
     UploadVideoProgress
   },
   created: function() {
-   
     var userinfo = Session.get("isLogin");
     if (userinfo && userinfo.exist === true);
     else this.$router.replace("/login");
@@ -169,26 +179,32 @@ export default {
       //    const ipfsClient = Npm.require('ipfs-http-client');
       this.$emit("uploadFile");
     },
+    uploadsnap: function() {
+      //    const ipfsClient = Npm.require('ipfs-http-client');
+      this.$emit("uploadsnap");
+    },
     toUpload: function(event) {
       this.propressType = 0;
-      console.log(event.target.files);
-      // console.log(typeof )
       dt = event.target;
       $("#uploadLinkForm").hide();
       $("#uploadDetails").show();
       this.tempContent = true;
-      // if (!dt.files || dt.files.length == 0) {
-      //   toastr.error(
-      //     translate("UPLOAD_ERROR_UPLOAD_FILE"),
-      //     translate("ERROR_TITLE")
-      //   );
-      //   return;
-      // }
-      var file = dt.files[0];
-      if (file.type.split("/")[0] != "video") {
-        toastr.error("你所提交的文件不是视屏", "错误");
+      if (!dt.files || dt.files.length == 0) {
+        toastr.error(
+          translate("UPLOAD_ERROR_UPLOAD_FILE"),
+          translate("ERROR_TITLE")
+        );
         return;
       }
+      var file = dt.files[0];
+      if (file.type.split("/")[0] != "video") {
+        toastr.error(
+          translate("UPLOAD_ERROR_WRONG_FORMAT"),
+          translate("ERROR_TITLE")
+        );
+        return;
+      }
+
       $("#videopreview").removeClass("dsp-non");
       $("#snappreview").removeClass("dsp-non");
       $("#dropzone").hide();
@@ -206,95 +222,79 @@ export default {
         }
       });
       videoNode.src = fileURL;
-
+      this.progressShow = true;
       /**
        * 文件上传
        */
-      ///////////////////////////////////////////////////////////////////////////////////
-      var address = Session.get("user.address");
-      var path =
-        address +
-        "/" +
-        file.name.substring(0, file.name.lastIndexOf(".")) +
-        "$" +
-        (new Date()).valueOf();
-      console.log(path);
+      /////////////////////////////////////////////////////////////////////////////////
       let formData = new FormData(document.getElementById("fileinfp"));
-      formData.append("path", file);
-      formData.append("arg",path);
-      formData.append("recursive",true);
-      // progressid = "#progressvideo";
 
       cb = function(err, result) {
         if (err) {
           this.progressShow = false;
           this.progress = 0;
-          // $(progressid).hide();
-          console.log(err);
           toastr.error(err, "上载时出现IPFS错误");
           return;
         } else {
-          
+          toastr.success("視頻传成功", "成功");
+          Session.set("videoHash", result.Hash);
           console.log("Uploaded video", result);
         }
       };
+      let ajaxVideoUpload = UploadUtil.uploadFile(file, formData, cb);
+      IpfsUtil.upFile(ajaxVideoUpload);
+    },
+    doUploadSnap: function(event) {
+      console.log(event);
+      this.propressType = 1;
+      var file = event.target.files[0];
+      var ValidImageTypes = ["image/gif", "image/jpeg", "image/png"];
+      console.log(file);
+      if (file.type.split("/")[0] != "image") {
+        toastr.error(
+          translate("UPLOAD_ERROR_NOT_IMAGE"),
+          translate("ERROR_TITLE")
+        );
+        return;
+      }
+      if (file.size > Session.get("remoteSettings").snapMaxFileSizeKB * 1000) {
+        toastr.error(
+          translate("UPLOAD_ERROR_REACH_MAX_SIZE") +
+            " " +
+            Session.get("remoteSettings").snapMaxFileSizeKB +
+            " KB",
+          translate("ERROR_TITLE")
+        );
+        return;
+      }
 
-      // $(progressid).progress({ value: 0, total: 1 });
-      // $(progressid).show();
+      /**
+       * 文件上传
+       */
+      ///////////////////////////////////////////////////////////////////////////////////
       this.progressShow = true;
+      let formData = new FormData(document.getElementById("pictrueinfp"));
 
-       console.log(  $('#red'));
-       debugger;
-
-      // var credentials = Session.get("upldr") == "cluster" ? true : false;
-      let ajaxVideoUpload = {
-        cache: false,
-        contentType: false,
-        data:formData,
-        processData: false,
-        type: "POST",
-        xhr: function() {
-          // listen for progress events on the upload
-          var xhr = new window.XMLHttpRequest();
-          xhr.upload.addEventListener(
-            "progress",
-            function(evt) {
-              if (evt.lengthComputable) {
-                console.log(evt)
-                // $(progressid).progress({ value: evt.loaded, total: evt.total });
-                var progessvalue = (evt.loaded / evt.total) * 698;
-                $('#red').css('width',progessvalue);
-                // console.log(progessvalue);
-                if (evt.loaded == evt.total) {
-                  // $(progressid).progress({
-                  //   value: evt.loaded,
-                  //   total: evt.total
-                  // });
-                  this.progessvalue = 698;
-                }
-              }
-            },
-            false
-          );
-          return xhr;
-        },
-        resolve: function(result) {
-          console.log(result);
-          if (typeof result === "string") result = JSON.parse(result);
-          console.log(result);
-          $(progressid).hide();
-        },
-        reject: function(error) {
-          // $(progressid).hide();
-          cb(error);
+      cb = function(err, result) {
+        if (err) {
+          this.progressShow = false;
+          this.progress = 0;
+          toastr.error(err, "上载截图时出现IPFS错误");
+          return;
+        } else {
+          toastr.success("图片上传成功", "成功");
+          Session.set("picturehash", result.Hash);
+          console.log("Uploaded picture", result);
         }
       };
-      ipfsClient = new IpfsUtil();
-      ipfsClient.upFile(ajaxVideoUpload);
-      ///////////////////////////////////////////////////////////////////////////////////
+      // var credentials = Session.get("upldr") == "cluster" ? true : false;
+      let ajaxVideoUpload = UploadUtil.uploadFile(file, formData, cb);
+      IpfsUtil.upFile(ajaxVideoUpload);
+
+      //  new UploadUtil().uploadFile(file,formData,cb,xhr);
     },
     downloadsnap: function(event) {
-      console.log(event);
+      // console.log(event);
       var video = document.querySelector("video");
       var canvas = document.querySelector("canvas");
       var context = canvas.getContext("2d");
@@ -317,6 +317,57 @@ export default {
       // Save snap to disk
       var dt = canvas.toDataURL("image/jpeg");
       $("#snap").attr("href", dt);
+    },
+    publish:function() {
+         var resid =  Session.get("resid");
+         if (!resid) {
+           toastr.info(translate("UPLOAD_FIRST"),translate("TIPS_TITLE"));
+           return ;
+         }
+
+         if (typeof web3 != "undefined") {
+            web3 = new Web3(web3.currentProvider);
+          } else {
+            web3 = new Web3(
+              new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+            );
+          }
+
+          console.log(address);
+          console.log(AuthorModule);
+          var AuthorModuleCon = new web3.eth.Contract(
+            AuthorModule.abi,
+            res.AuthorModule,
+            {
+              from: address
+            }
+          );
+          console.log(AuthorModuleCon);
+          AuthorModuleCon.methods
+            .publish(videoHash, [title], pictureHash, title)
+            .call({ gas: 20000000000 }, function(error, res) {
+              console.log(error);
+              console.log(res);
+              var _resid = res;
+             if (_resid == '0x00000000000000000000000000000000') {
+                 _resid = "0xe108ec3190139db7217218b2b7580171";
+             }
+
+
+              if (_resid == "0x00000000000000000000000000000000") {
+                toastr.error(
+                  translate("UPLOAD_ERROR_SUBMIT_BLOCKCHAIN"),
+                  translate("ERROR_TITLE")
+                );
+              } else {
+                toastr.success(
+                  translate("UPLOAD_COMPLETE_SUBMIT_BLOCKCHAIN"),
+                  translate("USERS_SUCCESS")
+                );
+                Session.set("resid", _resid);
+                $("#saveinfo").click();
+              }
+            });
     }
   }
 };

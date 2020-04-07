@@ -40,7 +40,7 @@ Meteor.startup(() => {
     "showMethod": "slideDown",
     "hideMethod": "slideUp"
   }
-
+  Session.set("remoteSettings",Meteor.settings.remote);
 });
 
 

@@ -15,7 +15,7 @@ export default {
     change: function() {
       var userinfo = Session.get("isLogin");
       if (userinfo && userinfo.exist === true)
-        this.$router.push("/upload");
+        this.$router.replace("/upload");
       else this.$router.replace("/login");
     }
   }

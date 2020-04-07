@@ -1,4 +1,4 @@
-User = new Mongo.Collection('USER');
+import '../db'
 
 import './login'
 import './register'

@@ -40,6 +40,7 @@
         </div>
       </form>
     </div>
+    <div v-on:click="route" id="route" />
   </div>
 </template>
 
@@ -48,7 +49,8 @@ import Global from "../setting/setting";
 import BigNumber from "bignumber";
 import EthUtil from "ethereumjs-util";
 import Web3 from "Web3";
-
+import AdminModule from '../api/eth/abi/AdminModule'
+import CenterControl from "../api/eth/abi/CenterControl";
 export default {
   data() {
     return {
@@ -58,12 +60,17 @@ export default {
     };
   },
   methods: {
+    route: function() {
+      var userinfo = Session.get("isLogin");
+      if (userinfo && userinfo.exist) {
+        this.$router.replace("/");
+      }
+    },
     login: function() {
       // console.log(this.eth_account);
       // console.log(this.privatekey);
       var remail = this.email.replace(/\s/g, "");
       var rprivatekey = this.privatekey.replace(/\s/g, "");
-
 
       if (rprivatekey.length == 64) {
         if (typeof web3 != "undefined") {
@@ -73,11 +80,12 @@ export default {
             new Web3.providers.HttpProvider(Meteor.settings.eth.address)
           );
         }
-
+        console.log(rprivatekey)
         let publicKey = EthUtil.privateToPublic(new Buffer(rprivatekey, "hex"));
+       
         let publicKeyString = publicKey.toString("hex");
-
-   //     console.log(publicKeyString);
+         console.log(publicKeyString)
+        //     console.log(publicKeyString);
 
         Meteor.call(
           "user.login",
@@ -86,7 +94,7 @@ export default {
             publicKey: publicKeyString
           },
           function(err, res) {
-       //     console.log("callback");
+            //     console.log("callback");
             if (err) {
               alert(err);
             } else {
@@ -95,7 +103,17 @@ export default {
                 Session.set("isLogin", res);
                 // console.log("ssss");
                 let address = EthUtil.pubToAddress(publicKey).toString("hex");
+                console.log(address);
                 Session.set("user.address", address);
+
+                if (typeof web3 != "undefined") {
+                  web3 = new Web3(web3.currentProvider);
+                } else {
+                  web3 = new Web3(
+                    new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+                  );
+                }
+                $("#route").click();
               } else {
                 this.loginError = true;
               }
@@ -103,22 +121,51 @@ export default {
           }
         );
 
-   
-        var userinfo = Session.get("isLogin");
-        /**
-         * to 回调会在判断之后 需要两成登录
-         */
-        var userinfo = Session.get("isLogin");
-       // console.log("userinfo：" + userinfo);
-        if (userinfo && userinfo.exist) {
-          // console.log("sss")
-          this.$router.replace("/");
-        }
-     //   console.log("ssss");
+      //   Meteor.apply(
+      //   "getContract",
+      //   [
+      //     ["AdminModule","CenterControl"]
+      //   ],
+      //   {
+      //     wait:true
+      //   },
+      //   function(err, res) {
+      //     const address = Session.get("user.address");
+      //     if (err) {
+      //       alert(err);
+      //     } else {
+      //       console.log(res);
+      //       if (typeof web3 != "undefined") {
+      //         web3 = new Web3(web3.currentProvider);
+      //       } else {
+      //         web3 = new Web3(
+      //           new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+      //         );
+      //       }
+
+      //       console.log(address);
+      //       console.log(AdminModule);
+      //       var AdminModuleCon = new web3.eth.Contract(AdminModule.abi, res.AdminModule, {
+      //         from: address, // default from address
+      //         gasPrice: "20000000000" // default gas price in wei, 20 gwei in this case
+      //       });
+      //       console.log(AdminModuleCon);
+      //       AdminModuleCon.methods
+      //         .mangeDestWhite(res.CenterControl, address,true)
+      //         .send({}, function(error, transactionHash) {
+      //           console.log(error);
+      //           console.log(transactionHash);
+      //         });
+      //     }
+      //   }
+      // );
       } else {
         this.loginError = true;
       }
     }
+
+
+
   }
 };
 </script>

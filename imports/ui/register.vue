@@ -45,6 +45,7 @@
           </div>
         </div>
       </form>
+      <div v-on:click="route" id="route" />
     </div>
   </div>
 </template>
@@ -72,6 +73,14 @@ export default {
     };
   },
   methods: {
+    route: function() {
+      // console.log("route");
+      var userinfo = Session.get("isLogin");
+      if (userinfo.exist) {
+        // console.log("sss")
+        this.$router.replace("/");
+      }
+    },
     login: function() {
       Session.set(Globle.content, Globle.contentType.Login);
     },
@@ -96,24 +105,21 @@ export default {
       /*
         注册
     //  */
-      var hasRegister;
-      Meteor.call(
+      var res = Meteor.call(
         "user.hasRegister",
         {
           email: this.email
         },
         function(err, res) {
-          console.log(res);
-          hasRegister = res;
+          // console.log(res);
+          const hasRegister = res;
           //return res; //hasRegister = res;
+          if (hasRegister) {
+            toastr.error(ERROR_INFO.emailExist, "错误");
+          }
+          console.log("end");
         }
       );
-
-      //console.log(hasRegister);
-      if (hasRegister) {
-        this.emailError = ERROR_INFO.emailExist;
-        return;
-      }
 
       //   this.emailError = " ";
 
@@ -124,14 +130,35 @@ export default {
           new Web3.providers.HttpProvider(Meteor.settings.eth.address)
         );
       }
+      // web3.eth.net.getId().then(console.log)
+      // web3.eth.getAccounts().then(console.log)
 
       // var newAccount = web3Util.createAccount();
-      var newAccount = web3.eth.accounts.create(web3.utils.randomHex(32));
+
+
+       var newAccount = web3.eth.accounts.create(web3.utils.randomHex(32));
+
+
+
       // console.log(newAccount);
 
+      // web3.eth.sendTransaction(
+      //   {
+      //     from:"0x2D20Fd162317C1c09154B19ECd112A8A2bEB8153",
+      //     to:newAccount.address,
+      //     value:web3.utils.toWei('10',"ether")
+      //   },function(err,hash) {
+      //     console.log(err);
+      //     console.log(hash);
+      //   }
+      // // )
+      // web3.eth.getBalance(newAccount.address).then(console.log)
       // let privatekey = new Buffer( newAccount.privateKey,'hex');
-      let publicKey = EthUtil.privateToPublic(
-        EthUtil.toBuffer(newAccount.privateKey)
+      // let publicKey = EthUtil.privateToPublic(
+      //   EthUtil.toBuffer(newAccount.privateKey)
+      // );
+          let publicKey = EthUtil.privateToPublic(
+        EthUtil.toBuffer("0x09009078e7ca0a5a927fd1aa752b185560afc261b932ff20894804ba810fcf2e")
       );
       //  let publicKey = EthUtil.privateToPublic(EthUtil.toBuffer("0xa1b6bedba8993ee1a03fb15003538986f42f08b8ff243e1def94aa3b76adf5ef"));
       // console.log(newAccount.privateKey.length)
@@ -143,35 +170,40 @@ export default {
        * todo:邮箱发送
        */
 
-      Meteor.call(
+      Meteor.apply(
         "user.register",
+        [
+          {
+            account: this.account,
+            publicKey: publicKeyString,
+            email: this.email
+          }
+        ],
         {
-          account: this.account,
-          publicKey: publicKeyString,
-          email: this.email
+          wait: true
         },
         function(err, res) {
+          // console.log(res);
           if (res) {
-            Session.set("isLogin", res.user);
+            user = {
+              exist: true,
+              user: {
+                account: this.account,
+                publicKey: publicKeyString,
+                email: this.email
+              }
+            };
+            Session.set("isLogin",user);
             let address = EthUtil.pubToAddress(publicKey).toString("hex");
             Session.set("user.address", address);
+            $("#route").click();
             return;
           }
           // console.log(res);
           // console.log(err);
-          toastr.error(
-            '注册失败,请联系管理员',
-            '错误'
-          );
-          return;
+          toastr.error("注册失败,请联系管理员", "错误");
         }
       );
-       var userinfo = Session.get('isLogin');
-        if ( userinfo.exist ) {
-          // console.log("sss")
-          this.$router.replace("/");
-        }
-       
     }
   }
 };

@@ -9,5 +9,8 @@ Meteor.settings = {
         "register":"register",
         "upload":"Upload",
     },
-    "content":"contentType"
+    "content":"contentType",
+    "remote": {
+        "snapMaxFileSizeKB": 1024
+      },
 };

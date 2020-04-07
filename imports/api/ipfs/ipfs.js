@@ -5,20 +5,16 @@ api_name = {
     "addFile": "/api/v0/add"
 }
 
-class IpfsUtil extends Ajaxutil {
-    
-    constructor() {
-        super();
-    }
+class IpfsUtil {
 
-    upFile(option) {
+    static upFile(option) {
         console.log(option);
         console.log(api_name.addFile);
-       super.ajax(api_name.addFile,option)
+        Ajaxutil.ajax(api_name.addFile,option)
     }
 }
 
 //  ipfsUtil = new IpfsUtil();
 
 
-export { IpfsUtil };
+module.exports = IpfsUtil;

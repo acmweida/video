@@ -16,12 +16,24 @@ class Ajaxutil {
         
     }
 
-    ajax(url, opent) {
+    static ajax(url, opent) {
 
         return this._request(url, opent)
     }
 
-    _request(url, option) {
+    static _request(url, option) {
+
+       var _show_error = function (error_code) {
+            console.log(error_code)
+            if (!error_code) {
+                error_code = 1
+            }
+            const tip = tips[error_code] ? tip[error_code] : tips[1];
+            toastr.error(
+                tip,
+                "ipfs错误"
+            )
+        }
         // console.log(option.error);
         console.log(config.IPFS.api_base_url + url);
 
@@ -29,10 +41,8 @@ class Ajaxutil {
 
         ajaxOption.url = config.IPFS.api_base_url + url;
         ajaxOption.success = function (res) {
-            const code = res.status.toString()
-            console.log(res)
+            const code = res.status.toString();
             if (code.startsWith('2')) {
-                // resolve(res.data);
                 option.resolve(res.responseText);
             }
             else {
@@ -44,62 +54,32 @@ class Ajaxutil {
                 _show_error(error_code)
             }
         };
+     
         ajaxOption.error = function (error) {
             console.log(error)
-            if (option.reject)
-                option.reject(error)
-            const error_code = error.status
+            const code = error.status.toString();
+            if (code.startsWith('2')) {
+                option.resolve(error.responseText);
+            }
+            else {
+                _show_error(error_code)
+                if (option.reject)
+                    option.reject(res)
+                const error_code = res.data.code
+                //    console.log(error_code)
+                _show_error(error_code)
+            }
+
             // console.log(error_code)
-            _show_error(error_code)
+         
             return;
         };
-
-        console.log(ajaxOption.type)
         $.ajax(ajaxOption)
 
-        // console.log(config.IPFS.api_base_url + url)
-        /*     HTTP.call(method, config.api_base_url + url, header, {
-                 params: params,
-                 data: data,
-                 content: content
-             }, function (err, res) {
-                 if (err) {
-                     console.log(err)
-                     if (reject)
-                         reject()
-                     const error_code = err.data.code
-                     // console.log(error_code)
-                     this._show_error(error_code)
-                     return;
-                 }
-                 const code = res.statusCode.toString()
-                 console.log(res)
-                 if (code.startsWith('2')) {
-                     resolve(res.data);
-     
-                 }
-                 else {
-                     if (reject)
-                         reject()
-     
-                     const error_code = res.data.code
-                     //    console.log(error_code)
-                     this._show_error(error_code)
-                 }
-             })*/
+        
     }
 
-     _show_error(error_code) {
-        console.log(error_code)
-        if (!error_code) {
-            error_code = 1
-        }
-        const tip = tips[error_code] ? tip[error_code] : tips[1];
-        toastr.error(
-            tip,
-            "ipfs错误"
-        )
-    }
+ 
 
 }
 

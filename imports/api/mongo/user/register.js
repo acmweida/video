@@ -25,6 +25,7 @@ export const userRegister = {
 
 Meteor.methods({
     [userRegister.name]:function(args) {
+        
         userRegister.validate.call(this,args);
         return userRegister.run.call(this,args);
     }
