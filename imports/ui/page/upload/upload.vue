@@ -112,7 +112,10 @@
                 type="button"
                 style="margin-bottom:10px;"
               >
-                <div style="display:inline-block;padding: 0.8em 1em;" v-on:click="publish">PUBLISH VIDEO</div>
+                <div
+                  style="display:inline-block;padding: 0.8em 1em;"
+                  v-on:click="publish"
+                >PUBLISH VIDEO</div>
                 <!-- <i class="fire icon red" style="background: white;opacity: 1;"></i> -->
                 <i
                   class="icon white loading spinner dsp-non"
@@ -130,10 +133,10 @@
 <script>
 import UploadFilefrom from "./uploadfileform/uploadfileform";
 import UploadVideoProgress from "./uploadvideoprogress/uploadvideoprogress";
-import Web3 from "Web3";
 import UploadUtil from "./UploadUtil";
 import "../../../util/translate";
 import IpfsUtil from "../../../api/ipfs/ipfs";
+import WEB3Util from "../../../api/eth/web3"
 export default {
   data() {
     return {
@@ -318,56 +321,42 @@ export default {
       var dt = canvas.toDataURL("image/jpeg");
       $("#snap").attr("href", dt);
     },
-    publish:function() {
-         var resid =  Session.get("resid");
-         if (!resid) {
-           toastr.info(translate("UPLOAD_FIRST"),translate("TIPS_TITLE"));
-           return ;
-         }
+    publish: function() {
+      var resid = Session.get("resid");
+      if (!resid) {
+        toastr.info(translate("UPLOAD_FIRST"), translate("TIPS_TITLE"));
+        return;
+      }
 
-         if (typeof web3 != "undefined") {
-            web3 = new Web3(web3.currentProvider);
+      if (typeof web3 != "undefined") {
+        web3 = new Web3(web3.currentProvider);
+      } else {
+        web3 = new Web3(
+          new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+        );
+      }
+
+      console.log(address);
+      callback = function(err,res) {
+        console.log(err);
+        console.log(res);
+        if (err) {
+          alert(err);
+        } else {
+          if (res) {
+             toastr.success(
+              translate("TORENT_PUBLISH_COMPETE"),
+              translate("USERS_SUCCESS")
+            );
           } else {
-            web3 = new Web3(
-              new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+             toastr.error(
+              translate("TORENT_PUBLISH_FAILE"),
+              translate("ERROR_TITLE")
             );
           }
-
-          console.log(address);
-          console.log(AuthorModule);
-          var AuthorModuleCon = new web3.eth.Contract(
-            AuthorModule.abi,
-            res.AuthorModule,
-            {
-              from: address
-            }
-          );
-          console.log(AuthorModuleCon);
-          AuthorModuleCon.methods
-            .publish(videoHash, [title], pictureHash, title)
-            .call({ gas: 20000000000 }, function(error, res) {
-              console.log(error);
-              console.log(res);
-              var _resid = res;
-             if (_resid == '0x00000000000000000000000000000000') {
-                 _resid = "0xe108ec3190139db7217218b2b7580171";
-             }
-
-
-              if (_resid == "0x00000000000000000000000000000000") {
-                toastr.error(
-                  translate("UPLOAD_ERROR_SUBMIT_BLOCKCHAIN"),
-                  translate("ERROR_TITLE")
-                );
-              } else {
-                toastr.success(
-                  translate("UPLOAD_COMPLETE_SUBMIT_BLOCKCHAIN"),
-                  translate("USERS_SUCCESS")
-                );
-                Session.set("resid", _resid);
-                $("#saveinfo").click();
-              }
-            });
+        }
+      }
+      WEB3Util.changeResourceWaive(address,true,callback);
     }
   }
 };

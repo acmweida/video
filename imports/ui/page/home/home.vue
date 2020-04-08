@@ -1,99 +1,111 @@
 <template>
-    <div  class="ui container">
-      <div data-v-0c98c25d class="top-banner"></div>
-        <div v-if="feedVideos" >
-          <h2>{{ HOME_TITLE_FEED_VIDEOS}}</h2>
-            <videoslider v-bind:videos="feedVideos">
-            </videoslider>
-           videoslider feedVidfeos
+  <main class="ui maingrid content">
+    
+    <div class="ui container">
+      <div class="top-banner"></div>
+      <div
+        v-if="hotVideos"
+        class="ui left aligned grid"
+        style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;"
+      >
+        <div
+          class="left floated left aligned ten wide column block-header"
+          style="padding-left:0px;"
+        >
+          <h2>
+            <a href="/hotvideos">{{ translateWapper("HOME_TITLE_HOT_VIDEOS")}}</a>
+          </h2>
         </div>
-        <div v-if="hotVideos" >
-          <div class="ui left aligned grid" style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;">
-          <div class="left floated left aligned ten wide column block-header" style="padding-left:0px;">
-            <h2><a href='/hotvideos'>{{ HOME_TITLE_HOT_VIDEOS}}</a></h2>
-          </div>
-          <div class=" floated right aligned two wide column" style="padding-right:0px;margin-top: 8px;">
-              <a href='/hotvideos' style="color:#666666"><h5>{{  HOME_SHOW_ALL }}</h5></a>
-          </div>
+        <div
+          class="floated right aligned two wide column"
+          style="padding-right:0px;margin-top: 8px;"
+        >
+          <a href="/hotvideos" style="color:#666666">
+            <h5>{{ translateWapper("HOME_SHOW_ALL") }}</h5>
+          </a>
         </div>
-          <videoslider v-bind:videos="hotVideos">
-          
-          </videoslider>
-           videoslider hotVideos
+      </div>
+      <videoslider v-if="hotVideos" v-bind:videosType="hotVideos"></videoslider>
+      <div class="ui divider"></div>
+      <div
+        v-if="trendingVideos"
+        class="ui left aligned grid"
+        style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;"
+      >
+        <div
+          class="left floated left aligned ten wide column block-header"
+          style="padding-left:0px;"
+        >
+          <h2>
+            <a href="/trendingvideos">{{ translateWapper("HOME_TITLE_TRENDING_VIDEOS")}}</a>
+          </h2>
         </div>
-       
-       <div v-if="trendingVideos" >
-        <div class="ui left aligned grid" style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;">
-            <div class="left floated left aligned ten wide column block-header" style="padding-left:0px;">
-                <h2><a href='/trendingvideos'>{{ HOME_TITLE_TRENDING_VIDEOS }}</a></h2>
-              </div>
-              <div class=" floated right aligned two wide column" style="padding-right:0px;margin-top: 8px;">
-                  <a href='/trendingvideos' style="color:#666666"><h5>{{ HOME_SHOW_ALL }}</h5></a>
-              </div>
-            </div>
-            <videoslider v-bind:videos="trendingVideos">
-          
-          </videoslider>
-           videoslider trendingVideos
+        <div
+          class="floated right aligned two wide column"
+          style="padding-right:0px;margin-top: 8px;"
+        >
+          <a href="/trendingvideos" style="color:#666666">
+            <h5>{{ translateWapper("HOME_SHOW_ALL")}}</h5>
+          </a>
         </div>
-        <div v-if="newVideos" >
-        
-        <div class="ui left aligned grid" style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;">
-            <div class="left floated left aligned ten wide column block-header" style="padding-left:0px;">
-                <h2><a href='/newvideos'>{{ HOME_TITLE_NEW_VIDEOS }}</a></h2>
-              </div>
-              <div class=" floated right aligned two wide column" style="padding-right:0px;margin-top: 8px;">
-                  <a href='/newvideos' style="color:#666666"><h5>{{ HOME_SHOW_ALL }}</h5></a>
-              </div>
-            </div>
-            <videoslider v-bind:videos="newVideos">
-          
-            </videoslider>
-           videoslider newVideos
-           </div>
-       
+      </div>
+      <videoslider v-if="trendingVideos" v-bind:videosType="trendingVideos"></videoslider>
+      <div class="ui divider"></div>
+      <div
+        v-if="newVideos"
+        class="ui left aligned grid"
+        style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;"
+      >
+        <div
+          class="left floated left aligned ten wide column block-header"
+          style="padding-left:0px;"
+        >
+          <h2>
+            <a href="/newvideos">{{ translateWapper("HOME_TITLE_NEW_VIDEOS")}}</a>
+          </h2>
+        </div>
+        <div
+          class="floated right aligned two wide column"
+          style="padding-right:0px;margin-top: 8px;"
+        >
+          <a href="/newvideos" style="color:#666666">
+            <h5>{{ translateWapper("HOME_SHOW_ALL")}}</h5>
+          </a>
+        </div>
+      </div>
+      <videoslider v-if="newVideos" v-bind:videosType="newVideos"></videoslider>
+      <div class="ui divider"></div>
     </div>
+  </main>
 </template>
 
+
 <script>
-import videoslider from '../../components/comment/video/videoslider'
+import videoslider from "../../components/comment/video/videoslider";
 export default {
-    data() {
-        return {
-            HOME_TITLE_FEED_VIDEOS:'订阅的新内容',
-            HOME_TITLE_HOT_VIDEOS:"热门视频",
-            HOME_TITLE_TRENDING_VIDEOS:'潮流视频',
-            HOME_SHOW_ALL: "显示全部",
-            HOME_TITLE_NEW_VIDEOS:"新视频",
-        }
-    },
-    components:{
-      videoslider
-    },
-    computed:{
-      feedVideos:function() {
-        return [{id:1},{id:2},{id:3}]
-      },
-      trendingVideos:function() {
-        return [{id:1},{id:2}]
-      },
-      hotVideos:function() {
-        return [{id:1},{id:2}]
-      },
-      newVideos:function() {
-        return [{id:1},{id:2}]
-      }
+  data() {
+    return {
+      feedVideos:"feedVideos",
+      trendingVideos:"trendingVideos",
+      hotVideos:"hotVideos",
+      newVideos:"newVideos"
+    };
+  },
+  components: {
+    videoslider
+  },
+  methods: {
+    translateWapper: function(code) {
+      return translate(code);
     }
-}
+  }
+};
 </script>
 
 <style>
-
 .top-banner {
-  background-color:white;
-  height: 56px;
+  background-color: white;
   text-align: center;
   margin-bottom: 60px;
 }
-
 </style>

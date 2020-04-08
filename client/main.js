@@ -8,7 +8,7 @@ import './main.html';
 import '../imports/startup/client/start.js'
 import './settings'
 import routes from './routes'
-
+import '../imports/util/Util'
 
 Meteor.startup(() => {
   const router = new VueRouter({

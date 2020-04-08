@@ -179,8 +179,8 @@ export default {
 }
 
 .top-banner {
-  background: #00a0d8;
-  height: 90px;
+  background: white;
+  height: 95px;
   text-align: center;
   margin-bottom: 20px;
   background-color: white;

@@ -113,6 +113,8 @@ var codeToInfo = {
     "TORRENT_STATS_PEERS": "已连接的节点",
     "TORRENT_STATS_UPLOAD": "上传速度",
     "TORRENT_CONGRATZ": "视频成功上传到网站",
+    "TORENT_PUBLISH_COMPETE":"视频发布成功",
+    "TORENT_PUBLISH_FAILE":"视频发布失败",
     "TORRENT_FAILE": "视频上传到网站失败",
     "TORRENT_USE_THIS_LINK_TO_SHARE": "你可以使用此链接分享你的视频",
     "TORRENT_WATCH_VIDEO": "观看你的视频",

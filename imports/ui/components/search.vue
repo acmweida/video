@@ -5,7 +5,10 @@
             <form class="searchForm wid-ful">
               <input id="dsearch" type="text" name="search" placeholder="寻找视频…" autocomplete="off" />
             </form>
-             <input type="button"  value="search" style="height:36px" />
+            <div style="background-color:white;width:90px;text-align:center" >
+              <!-- <ion-icon name="search-outline"></ion-icon> -->
+           <i class="icon ion-search" style="font-size:32px" ></i>
+            </div>
           </div>
           <div class="results" style="display: none;"></div>
         </div>

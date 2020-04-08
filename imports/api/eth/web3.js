@@ -37,6 +37,35 @@ class WEB3Util {
     }
 
 
+    static changeResourceWaive(address,waive,callback) {
+        if (typeof web3 != "undefined") {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            web3 = new Web3(
+                new Web3.providers.HttpProvider(Meteor.settings.eth.address)
+            );
+        }
+        const AuthorModuleAddr =  conAdd.contracts["AuthorModule"];
+        console.log(address);
+        console.log(AuthorModule);
+        var AuthorModuleCon = new web3.eth.Contract(
+            AuthorModule.abi,
+            AuthorModuleAddr,
+            {
+                from: address
+            }
+        );
+        console.log(AuthorModuleCon);
+        AuthorModuleCon.methods
+            .changeResourceWaive(_resid,waive)
+            .call({ gas: 20000000000 }, function (error, res) {
+                console.log(error);
+                console.log(res);
+                callback(error,res);
+            });
+    }
+
+
 }
 
 
