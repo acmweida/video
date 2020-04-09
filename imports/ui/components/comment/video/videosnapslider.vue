@@ -63,7 +63,7 @@
 
 <script>
 import '../../../../util/translate'
-import { User } from '../../../../api/mongo/db'
+// import { User } from '../../../../api/mongo/db'
 export default {
   props:{
     video:Object
@@ -81,20 +81,44 @@ export default {
     };
   },
    meteor: {
-    $subscribe: {
-      // Subscribes to the 'threads' publication with no parameters
-      user: []
+    // $subscribe: {
+    //   // Subscribes to the 'threads' publication with no parameters
+    //   user: []
+    // },
+    username(){
+        var username =  Session.get("username"+this.video.author);
+        if (!username) {
+          return "..."
+        } 
+        return username;
     },
-    username() {
-      var username = User.findOne({publicKey:this.video.author},{account:1});
-      if (!username ) {
-        return "...";
-      }
-     // console.log(username);
-     /**
-      * todo:只查询用户名
-      */
-      return username.account;
+    getUserName() {
+      var author = this.video.author;
+      console.log(author)
+
+      Meteor.call(
+        "user.getUserName",
+        {
+          publicKey:author
+        },
+        function(err,res) {
+          if (err) {
+            alert(err)
+          } else {
+            Session.set("username"+author,res);
+          }
+        }
+      )
+
+    //   var username = User.findOne({publicKey:this.video.author},{account:1});
+    //   if (!username ) {
+    //     return "...";
+    //   }
+    //  // console.log(username);
+    //  /**
+    //   * todo:只查询用户名
+    //   */
+    //   return username.account;
     }
   },
   methods:{

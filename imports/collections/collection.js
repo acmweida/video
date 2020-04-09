@@ -1,1 +1,1 @@
-const Video = new Mongo.Collection('VIDEO');
+export const Video = new Mongo.Collection('VIDEO');
