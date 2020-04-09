@@ -1,3 +1,4 @@
+import { Video } from "../db"
 export const videoCreate = {
     name: 'video.create',
     validate(args) {

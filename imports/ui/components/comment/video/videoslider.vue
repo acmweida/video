@@ -10,7 +10,7 @@
 
 <script>
 import videosnapslider from './videosnapslider'
-import { Video } from "../../../../collections/collection"
+import { Video } from "../../../collections/collection"
 var carousel = require("owl.carousel");
 export default {
   props: {

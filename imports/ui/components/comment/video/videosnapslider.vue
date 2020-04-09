@@ -81,10 +81,6 @@ export default {
     };
   },
    meteor: {
-    // $subscribe: {
-    //   // Subscribes to the 'threads' publication with no parameters
-    //   user: []
-    // },
     username(){
         var username =  Session.get("username"+this.video.author);
         if (!username) {

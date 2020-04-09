@@ -1,4 +1,5 @@
 
+import {User} from '../db'
 export const userHasRegister = {
     name : 'user.hasRegister',
     validate(args) {

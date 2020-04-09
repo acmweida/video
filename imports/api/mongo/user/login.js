@@ -1,4 +1,6 @@
-export const userLogin = {
+import {User} from '../db'
+
+ const userLogin = {
     name : 'user.login',
     validate(args) {
         new SimpleSchema({
@@ -22,11 +24,9 @@ export const userLogin = {
     }
 
 };
-
-
 Meteor.methods({
-    [userLogin.name]:function(args) {
-        userLogin.validate.call(this,args);
-        return userLogin.run.call(this,args);
+    [userLogin.name]: function (args) {
+        userLogin.validate.call(this, args);
+        return userLogin.run.call(this, args);
     }
 })
