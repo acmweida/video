@@ -72,7 +72,7 @@ export default {
     return {
       thumbsup:  numForm(this.video.thumbsup),
       url: "/video/"+this.video.ipfs,
-      imgUrl: Meteor.settings.IPFS.file_base_url+"/ipfs/"+this.video.cover,
+      imgUrl: Meteor.settings.IPFS.file_base_url+this.video.cover,
       title:this.video.title,
       author:this.video.author,
       userUrl:"/user/"+this.video.author,
@@ -83,6 +83,7 @@ export default {
    meteor: {
     username(){
         var username =  Session.get("username"+this.video.author);
+        Session.set(this.video.ipfs,this.video);
         if (!username) {
           return "..."
         } 
@@ -90,7 +91,6 @@ export default {
     },
     getUserName() {
       var author = this.video.author;
-      console.log(author)
 
       Meteor.call(
         "user.getUserName",

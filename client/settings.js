@@ -17,6 +17,6 @@ Meteor.settings = {
         "api_base_url": "http://139.196.92.62:5001",
         "port": 5001,
         "address": "http://139.196.92.62",
-        "file_base_url": "http://139.196.92.62:8081"
+        "file_base_url": "http://139.196.92.62:8081/ipfs/"
     }
 };

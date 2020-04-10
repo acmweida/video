@@ -14,3 +14,8 @@ Meteor.publish('hotVideos', function () {
     var res = Video.find({ $sample: { size: 25 } });
     return res;
 });
+
+Meteor.publish('video', function () {
+    var res = Video.find({});
+    return res;
+});

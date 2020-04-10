@@ -200,7 +200,8 @@ var codeToInfo = {
     "VIDEO_EMBED_LINK_COPIED": "嵌入链接已成功复制到剪贴板",
     "VIDEO_LINK_ERROR": "您的浏览器不支持复制到剪贴板",
     "WARNING_TITLE": "警告",
-    "TIPS_TITLE":"提示"
+    "TIPS_TITLE":"提示",
+    "VIDEO_VOTE_TAG":"标签"
 }
 
 translate = function(code) {
