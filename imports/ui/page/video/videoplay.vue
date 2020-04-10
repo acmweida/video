@@ -24,7 +24,6 @@
             <div class="videotitlecontainer">
               <h1 class="videotitle">{{videoinfo.title}}</h1>
             </div>
-
             <div style="display:inline-block;">
               <div
                 id="videosnaptags"
@@ -37,27 +36,19 @@
           </div>
         </div>
         <!-- Author Info (image and name) - Suscribe - Edit - Payout   -->
-        <div class="ui segment" style="padding:0px!important;">
+        <div v-if="authorInfo" class="ui segment" style="padding:0px!important;">
           <div class="details wid-ful">
             <div class="videoleftdetails wid-ful" style="padding: 10px;">
               <div class="videorightdetails">
                 <div class="videopayout">{{videoinfo.gratuityNum}} DTC</div>
-                <svg
-                  class="sparkline"
-                  width="200"
-                  height="60"
-                  stroke-width="2"
-                  style="display:none"
-                />
               </div>
-
               <div
                 class="ui left tiny circular avatar floated image"
-                style="margin-top: 4px; background-size: cover; min-width:64px; width:64px; height: 64px; background-image:url(https://image.d.tube/u/hauptmann/avatar/)"
+                v-bind:style="userImg"
               ></div>
 
               <div class="channelLink" style="margin-top:10px;">
-                <a href="https://d.tube/c/hauptmann">{{}}</a>
+                <a v-bind:href="'/user/'+authorInfo.publicKey">{{authorInfo.account}}</a>
               </div>
 
               <a href="https://d.tube/login/dtube">
@@ -69,7 +60,8 @@
 
               <span class="donateButton" style="margin-left: 10px">
                 <button class="ui icon grey button transferdtcbtn pos-rel">
-                  <i class="icon gift" style="color: black;"></i>
+                  <!-- <i class="icon ion-gift" ></i> -->
+                  <ion-icon name="gift-outline" style="color: black;font-size:20px"></ion-icon>
                 </button>
                 <!-- Send DTC Modal -->
                 <div
@@ -319,7 +311,18 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    userImg:function() {
+      return {
+        'margin-top': '4px',
+        'background-size': 'cover',
+        'min-width':'64px',
+        width:'64px',
+        height: '64px',
+        'background-image':'url('+ (this.authorInfo && this.authorInfo.pic ? Meteor.settings.IPFS.file_base_url+this.authorInfo.pic : "/static/images/user.png") +")"
+      }
+    }
+  },
   created() {
     this.fetchVideoData();
   },
@@ -339,7 +342,8 @@ export default {
       return Session.get(this.$route.params.id);
     },
     authorInfo: function() {
-      return Session.get("auther");
+      console.log(Session.get("author"))
+      return Session.get("author");
     }
   },
   methods: {

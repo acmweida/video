@@ -7,7 +7,8 @@
             </form>
             <div style="background-color:white;width:90px;text-align:center" >
               <!-- <ion-icon name="search-outline"></ion-icon> -->
-           <i class="icon ion-search" style="font-size:32px" ></i>
+           <!-- <i class="icon ion-search" style="font-size:32px" ></i> -->
+           <ion-icon name="search-outline" style="font-size:32px"></ion-icon>
             </div>
           </div>
           <div class="results" style="display: none;"></div>
