@@ -42,93 +42,29 @@
               <div class="videorightdetails">
                 <div class="videopayout">{{videoinfo.gratuityNum}} DTC</div>
               </div>
-              <div
-                class="ui left tiny circular avatar floated image"
-                v-bind:style="userImg"
-              ></div>
+              <div class="ui left tiny circular avatar floated image" v-bind:style="userImg"></div>
 
               <div class="channelLink" style="margin-top:10px;">
                 <a v-bind:href="'/user/'+authorInfo.publicKey">{{authorInfo.account}}</a>
               </div>
 
-              <a href="https://d.tube/login/dtube">
-                <div class="ui red dtube button subscribe" tabindex="0">
-                  <div style="display:inline-block; padding: 0.8em 1em;">订阅</div>
-                  <div class="ui label btnlabel">61</div>
-                </div>
-              </a>
+              <div v-on:click="subscript" class="ui red dtube button subscribe" tabindex="0">
+                <div
+                  style="display:inline-block; padding: 0.8em 1em;"
+                >{{ translateWapper("VIDEO_SUBSCRIBE")}}</div>
+                <div class="ui label btnlabel">0</div>
+              </div>
 
               <span class="donateButton" style="margin-left: 10px">
                 <button class="ui icon grey button transferdtcbtn pos-rel">
-                  <!-- <i class="icon ion-gift" ></i> -->
-                  <ion-icon name="gift-outline" style="color: black;font-size:20px"></ion-icon>
+                  <i class="icon gift" style="color: black;"></i>
                 </button>
-                <!-- Send DTC Modal -->
-                <div
-                  class="ui small modal transferdtc"
-                  style="z-index:1001; position: fixed; top:50%; left:50%; transform: translate(-50%, -50%)"
-                >
-                  <div class="header" style="border-bottom: 0">
-                    Sending DTC to hauptmann
-                    <img
-                      class="ui avatar image"
-                      src="./AGAIN A YEAR JUST WENT BY SO FAST _ D.tube talk#258 - DTube_files/saved_resource"
-                    />
-                  </div>
-                  <div class="content">
-                    <form class="ui large form wid-ful">
-                      <div class="ui segments">
-                        <div class="ui segment" style="padding: 20px;">
-                          <div class="field">
-                            <label>Amount</label>
-                            <div class="ui left icon input">
-                              <i class="calculator icon"></i>
-                              <input
-                                type="number"
-                                min="0.01"
-                                step="0.01"
-                                id="transfer_amount"
-                                value="1"
-                              />
-                            </div>
-                          </div>
-                          <div class="field">
-                            <label>Memo</label>
-                            <div class="ui left icon input">
-                              <i class="pencil icon"></i>
-                              <input type="text" id="transfer_memo" value />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="actions">
-                    <div
-                      id="confirmTransfer"
-                      class="ui right labeled icon button red dtube pos-rel"
-                    >
-                      <div style="display:inline-block;padding: 0.8em 1em;">Confirm</div>
-                      <i class="icon check red" style="background:white;opacity:1;"></i>
-                      <i
-                        class="icon white loading spinner dsp-non"
-                        style="background-color: transparent;opacity:1;"
-                      ></i>
-                    </div>
-                    <div
-                      id="cancelTransfer"
-                      class="ui right labeled icon button grey dtube pos-rel"
-                    >
-                      <div style="display:inline-block;padding: 0.8em 1em;">Cancel</div>
-                      <i class="icon x" style="background:white;opacity:1;"></i>
-                    </div>
-                  </div>
-                </div>
+                <buttontransfersmall></buttontransfersmall>
               </span>
             </div>
           </div>
         </div>
-        <div id="editvideosegment" class="ui segment" style="display: none">
+        <div v-if="isAuthor" id="editvideosegment" class="ui segment" style="display: none">
           <div
             class="ui bottom attached tab segment active"
             data-tab="first"
@@ -169,25 +105,8 @@
           style="display:grid; overflow: hidden;"
         >
           <div id="truncateddesc" class="truncate" style="overflow: hidden;">
-            <strong title="4 个月前">Published on 2019年12月18日</strong>
-            <br />Hi
-            <a href="http://d.tube/" target="_blank" rel="noopener noreferrer">D.tube</a> family.
-            <br />2 days left and I will start my holidays and will be off from work until 2020.
-            <br />Not a full recap of 2019 today but some highlights to mention already before.
-            <br />Thank you for watching, have a wonderful day.
-            <br />
-            <br />Greetings from Barcelona
-          </div>
-        </div>
-
-        <div class="ui segment description" style="text-align: center; padding:0px; margin:0px;">
-          <div id="showmore" style="text-align: center;">
-            <button class="ui button videoshowmore">更多</button>
-            <i class="ui icon angle down"></i>
-          </div>
-          <div id="showless" class="hidden" style="text-align: center;">
-            <button class="ui button videoshowmore">减少</button>
-            <i class="ui icon angle up"></i>
+            <strong title="4 个月前">Published on {{ dateFromWapper(videoinfo.createDate,true)}}</strong>
+            <br /> {{ videoinfo.description }}
           </div>
         </div>
 
@@ -197,8 +116,8 @@
         <div class="ui secondary segment" style="background: #f5f5f5;">
           <h3 class="ui header">1 回复</h3>
 
-          <div style="text-align: center; padding:10px;">
-            <a href="https://d.tube/login">
+          <div v-if="isLogin" style="text-align: center; padding:10px;">
+            <a href="/login">
               <h5>您需要登录才能发表评论!</h5>
             </a>
           </div>
@@ -239,7 +158,7 @@
 
     <div class="pdg-5 relatedcol four computer only wide column">
       <div class="ui grid videorecommendedcomputer" style="margin-right: -5rem;">
-        <h3>相关视频</h3>
+        <h3>{{ translateWapper('VIDEO_RELATED_VIDEOS')}}</h3>
 
         <div class="verticalvideoband wid-ful">
           <a
@@ -307,23 +226,36 @@
 
 <script>
 import play from "../../components/comment/video/player";
+import buttontransfersmall from "../../components/buttontransfersmall";
+import "../../../util/translate";
+import '../../../util/Util'
 export default {
   data() {
-    return {};
+    return {
+      isAuthor:false
+    };
   },
   computed: {
-    userImg:function() {
+    isLogin:function() {
+      return !(Session.get("isLogin") && Session.get("isLogin").exist ? true : false);
+    },
+    userImg: function() {
       return {
-        'margin-top': '4px',
-        'background-size': 'cover',
-        'min-width':'64px',
-        width:'64px',
-        height: '64px',
-        'background-image':'url('+ (this.authorInfo && this.authorInfo.pic ? Meteor.settings.IPFS.file_base_url+this.authorInfo.pic : "/static/images/user.png") +")"
-      }
+        "margin-top": "4px",
+        "background-size": "cover",
+        "min-width": "64px",
+        width: "64px",
+        height: "64px",
+        "background-image":
+          "url(" +
+          (this.authorInfo && this.authorInfo.pic
+            ? Meteor.settings.IPFS.file_base_url + this.authorInfo.pic
+            : "/static/images/user.png") +
+          ")"
+      };
     }
   },
-  created() {
+  mounted: function() {
     this.fetchVideoData();
   },
   watch: {
@@ -331,7 +263,8 @@ export default {
     $route: "fetchVideoData"
   },
   components: {
-    play
+    play,
+    buttontransfersmall
   },
   meteor: {
     // videoUrl:function() {
@@ -342,11 +275,12 @@ export default {
       return Session.get(this.$route.params.id);
     },
     authorInfo: function() {
-      console.log(Session.get("author"))
+      console.log(Session.get("author"));
       return Session.get("author");
     }
   },
   methods: {
+    subscript: function() {},
     fetchVideoData: function() {
       var ipfs = this.$route.params.id;
       Meteor.call(
@@ -364,6 +298,12 @@ export default {
           }
         }
       );
+    },
+    translateWapper: function(code) {
+      return translate(code);
+    },
+    dateFromWapper:function(date,type) {
+       return  dateFrom(date,type);
     }
   }
 };

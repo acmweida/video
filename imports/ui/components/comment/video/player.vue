@@ -5,9 +5,7 @@
           class="video-js"
           controls
           preload="auto"
-         
           v-bind:poster="coverUrl"
-          data-setup="{}"
          style="height: 560px;width:100%"
         >
           <source  v-bind:src="videoUrl" type="video/mp4" />
@@ -24,12 +22,12 @@
 </template>
 
 <script>
-import videojs from 'video.js'
+// import videojs from 'video.js'
 export default {
   props: {
     video: Object
   },
-  created() {
+  mounted() {
     this.init();
   },
   computed:{
@@ -45,7 +43,7 @@ export default {
       console.log("xxx");
       //   if (author && link)
     //   console.log(this.video);
-      var player = videojs('my-player');
+      var player = this.$video('my-player');
     }
   }
 };

@@ -9,6 +9,9 @@ import '../imports/startup/client/start.js'
 import './settings'
 import routes from './routes'
 import '../imports/util/Util'
+import Video from 'video.js'
+import 'video.js/dist/video-js.css'
+Vue.prototype.$video = Video
 
 Meteor.startup(() => {
   const router = new VueRouter({
