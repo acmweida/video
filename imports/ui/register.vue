@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div data-v-0c98c25d class="top-banner"></div>
+    <div  class="top-banner"></div>
     <div class="title-line">
       <span class="tit">注册</span>
     </div>
@@ -46,6 +46,8 @@
         </div>
       </form>
       <div v-on:click="route" id="route" />
+      <div v-on:click="whileList" id="white" ></div>
+      <div v-on:click="next" id="next"></div>
     </div>
   </div>
 </template>
@@ -56,6 +58,8 @@ import DeployUser from "../api/eth/abi/DeployUser";
 import BigNumber from "bignumber";
 import EthUtil from "ethereumjs-util";
 import Web3 from "Web3";
+import WEB3Util from '../api/eth/web3'
+import Config from '../api/eth/setting.json'
 // import Wallet from 'ethereumjs-wallet'
 
 const ERROR_INFO = {
@@ -105,7 +109,8 @@ export default {
       /*
         注册
     //  */
-      var res = Meteor.call(
+      var res = false;
+      Meteor.call(
         "user.hasRegister",
         {
           email: this.email
@@ -116,14 +121,19 @@ export default {
           //return res; //hasRegister = res;
           if (hasRegister) {
             toastr.error(ERROR_INFO.emailExist, "错误");
+            return ;
           }
+          $("#next").click()
           console.log("end");
         }
       );
 
       //   this.emailError = " ";
-
-      if (typeof web3 != "undefined") {
+     
+     
+    },
+    next:function() {
+          if (typeof web3 != "undefined") {
         web3 = new Web3(web3.currentProvider);
       } else {
         web3 = new Web3(
@@ -158,7 +168,7 @@ export default {
       //   EthUtil.toBuffer(newAccount.privateKey)
       // );
           let publicKey = EthUtil.privateToPublic(
-        EthUtil.toBuffer("0x09009078e7ca0a5a927fd1aa752b185560afc261b932ff20894804ba810fcf2e")
+        EthUtil.toBuffer("0x65e002ab2e6fbe69380a76e236b3d8ddc79456678e56c44d876206595f8ba362")
       );
       //  let publicKey = EthUtil.privateToPublic(EthUtil.toBuffer("0xa1b6bedba8993ee1a03fb15003538986f42f08b8ff243e1def94aa3b76adf5ef"));
       // console.log(newAccount.privateKey.length)
@@ -196,6 +206,7 @@ export default {
             Session.set("isLogin",user);
             let address = EthUtil.pubToAddress(publicKey).toString("hex");
             Session.set("user.address", address);
+              $("#white").click();
             $("#route").click();
             return;
           }
@@ -204,7 +215,27 @@ export default {
           toastr.error("注册失败,请联系管理员", "错误");
         }
       );
-    }
+    },
+     whileList:function() {
+
+            _contract = Config.contracts['CenterControl'],
+             _target = Session.get("user.address"),
+            //  console.log(_target)
+             _allow = true,
+             from = Config.admin
+            cb = function(err,res) {
+              console.log(err);
+              console.log(res);
+            }
+            WEB3Util.mangeDestWhite(from,_contract,_target,_allow,cb)
+
+            // Meteor.call(
+            //   'WhiteListAuthorization',
+            //   {
+            //     address:_target
+            //   }
+            // )
+        }
   }
 };
 </script>

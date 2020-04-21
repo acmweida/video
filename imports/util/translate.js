@@ -48,6 +48,7 @@ var codeToInfo = {
     "HOME_TITLE_WATCH_LATER": "稍后观看",
     "HOME_SHOW_ALL": "显示全部",
     "LOGIN_PLACEHOLDER_STEEM_USERNAME": "STEEM 用户名",
+    "USERNAME_FORMAT_ERROR":"用户名格式错误",
     "LOGIN_PLACEHOLDER_PRIVATE_POSTING_KEY": "Private Posting Key私钥",
     "LOGIN_REMEMBER_ME": "记得我",
     "LOGIN_BUTTON_LOGIN": "登入",
@@ -201,7 +202,23 @@ var codeToInfo = {
     "VIDEO_LINK_ERROR": "您的浏览器不支持复制到剪贴板",
     "WARNING_TITLE": "警告",
     "TIPS_TITLE":"提示",
-    "VIDEO_VOTE_TAG":"标签"
+    "VIDEO_VOTE_TAG":"标签",
+    "CHANNEL_TRANSFER":"支持",
+    "VIDEO_UP":"上架",
+    "VIDEO_DOWN":"下架",
+    "CHANNEL_PERSON_INFO":"我的信息",
+    "AUTHOR_DESC_NO":"什么都没有介绍",
+    "UPLOAD_PIC":"上传头像",
+    "UPLOAD_PIC_SUCCESS":"上传头像成功",
+    "UPLOAD_PIC_FAILE":"上传头像失败",
+    "USER_INFO_CHANGE_SUCCESS":"用户信息修改成功",
+    "USER_INFO_CHANGE_FAILE":"用户信息修改成功",
+    "TRANSFER_TO":"transfer to",
+    "TRANSFER_AMOUNT":"发送数量",
+    "TRANSFER_MEMO":"留言",
+    "CHANNEL_SAVINGS_NOT":"余额不足",
+    "TRANSFOR_SUCCESS":"打赏成功",
+    "TRANSFOR_LOG_SUCCESS":"打赏记录成功"
 }
 
 translate = function(code) {

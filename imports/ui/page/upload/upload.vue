@@ -106,7 +106,7 @@
               </div>
               <UploadFilefrom></UploadFilefrom>
             </div>
-            <div v-if="tempContent">
+            <!-- <div v-if="tempContent">
               <button
                 class="ui fluid red right labeled dtube icon button uploadsubmit"
                 type="button"
@@ -116,13 +116,13 @@
                   style="display:inline-block;padding: 0.8em 1em;"
                   v-on:click="publish"
                 >PUBLISH VIDEO</div>
-                <!-- <i class="fire icon red" style="background: white;opacity: 1;"></i> -->
-                <i
+                 <i class="fire icon red" style="background: white;opacity: 1;"></i> -->
+                <!-- <i
                   class="icon white loading spinner dsp-non"
                   style="background-color: transparent;opacity:1;"
                 ></i>
-              </button>
-            </div>
+              </button> -->
+            <!-- </div> --> 
           </div>
         </div>
       </main>
@@ -133,7 +133,7 @@
 <script>
 import UploadFilefrom from "./uploadfileform/uploadfileform";
 import UploadVideoProgress from "./uploadvideoprogress/uploadvideoprogress";
-import UploadUtil from "./UploadUtil";
+import UploadUtil from "../../../util/UploadUtil";
 import "../../../util/translate";
 import IpfsUtil from "../../../api/ipfs/ipfs";
 import WEB3Util from "../../../api/eth/web3"

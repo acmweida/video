@@ -51,19 +51,20 @@
               <div v-on:click="subscript" class="ui red dtube button subscribe" tabindex="0">
                 <div
                   style="display:inline-block; padding: 0.8em 1em;"
-                >{{ translateWapper("VIDEO_SUBSCRIBE")}}</div>
-                <div class="ui label btnlabel">0</div>
+                >{{ translate("VIDEO_SUBSCRIBE")}}</div>
+                <div class="ui label btnlabel">{{ authorInfo.follow}}</div>
               </div>
 
-              <span class="donateButton" style="margin-left: 10px">
+              <span class="donateButton" style="margin-left: 10px" v-on:click="transfer">
                 <button class="ui icon grey button transferdtcbtn pos-rel">
-                  <i class="icon gift" style="color: black;"></i>
+                  <i class="icon gift" style="color: white;"></i>
                 </button>
-                <buttontransfersmall></buttontransfersmall>
+             
               </span>
             </div>
           </div>
         </div>
+           <buttontransfersmall v-if="authorInfo && videoinfo" v-bind:author="authorInfo" v-bind:video="videoinfo" ></buttontransfersmall>
         <div v-if="isAuthor" id="editvideosegment" class="ui segment" style="display: none">
           <div
             class="ui bottom attached tab segment active"
@@ -105,8 +106,9 @@
           style="display:grid; overflow: hidden;"
         >
           <div id="truncateddesc" class="truncate" style="overflow: hidden;">
-            <strong title="4 个月前">Published on {{ dateFromWapper(videoinfo.createDate,true)}}</strong>
-            <br /> {{ videoinfo.description }}
+            <strong title="4 个月前">Published on {{ dateFrom(videoinfo.createDate,true)}}</strong>
+            <br />
+            {{ videoinfo.description }}
           </div>
         </div>
 
@@ -121,36 +123,31 @@
               <h5>您需要登录才能发表评论!</h5>
             </a>
           </div>
-
-          <div class="ui threaded comments" style="max-width: 9999px;">
-            <div class="ui fluid">
-              <div class="title comment" style="text-align:left; padding-bottom: 1em;">
-                <div class="ui comment" style="max-width: 9999px;">
-                  <a
-                    class="ui mini circular avatar image"
-                    style="margin-right:10px; width:48px; height:48px;"
-                  >
-                    <div
-                      style="background-size: cover; min-width:48px; width:48px; height: 48px; background-image:url(https://steemitimages.com/u/hafizullah/avatar/)"
-                    ></div>
-                  </a>
-
-                  <a href="https://d.tube/c/hafizullah" class="ui author">hafizullah</a>
-
-                  <div class="metadata">
-                    <a class="date" href="https://d.tube/v/hafizullah/q2pjrg">4 个月前</a>
-                    <span class="money">$0</span>
-                  </div>
-                  <div
-                    class="text"
-                    style="word-wrap: normal; flex-wrap: wrap; overflow: hidden; margin-top: 10px;"
-                  >
-                    <a href="https://d.tube/c/tipu" target="_blank" rel="noopener noreferrer">@tipu</a> curate
-                  </div>
+          <div v-else class="wid-ful dsp-flx">
+            <!-- <div style="text-align:left;float:left;">
+                <div class="ui avatar mini image"
+                  style="background-size:cover; margin-top:10px; min-width:48px; width:48px; height: 48px; background-image:url({{userPic activeUser 'small'}})">
                 </div>
+                <div class="ui author" style="margin-top:5px;margin-right:10px;font-weight: 600;">{{activeUser}}</div>
+            </div> CANT HAVE THAT WITH 2 LOGGED IN USERS ?-->
+            <form class="ui reply form wid-ful">
+              <div class="field pos-rel wid-ful" style="display: inline-block;vertical-align: top;">
+                <textarea id="replytext" rows="3"></textarea>
               </div>
-            </div>
+              <div
+                class="ui blue right labeled icon submit button dtube pos-rel"
+                style="float:right;vertical-align: top;"
+              >
+                <i class="ui blue icon remove repl dsp-non" style="background:white;opacity:1;"></i>
+                <i class="ui blue icon load repl dsp-non" style="background:white;opacity:1;">
+                  <div class="ui active loader"></div>
+                </i>
+                <!-- <i class="ui blue right icon repl talk iconloader on" style="background:white;"></i> -->
+                <div style="display:inline-block;padding: 0.8em 1em;">{{ translate("VIDEO_ADD_COMMENT")}}</div>
+              </div>
+            </form>
           </div>
+          <comments></comments>
         </div>
       </div>
     </div>
@@ -158,65 +155,10 @@
 
     <div class="pdg-5 relatedcol four computer only wide column">
       <div class="ui grid videorecommendedcomputer" style="margin-right: -5rem;">
-        <h3>{{ translateWapper('VIDEO_RELATED_VIDEOS')}}</h3>
+        <h3>{{ translate('VIDEO_RELATED_VIDEOS')}}</h3>
 
         <div class="verticalvideoband wid-ful">
-          <a
-            href="https://d.tube/v/hauptmann/oP4-Y2RSRGQ"
-            title="WHERE WE ARE PLANNING TO GO NEXT YEAR | D.tube talk#249"
-          >
-            <div class="verticalvideosnap wid-ful dsp-flx">
-              <div class="pos-rel" style="min-width: 160px; height:90px; float: left;">
-                <div class="verticalvideosnapsnap" style="height:90px;">
-                  <div
-                    id="snapload"
-                    class="ui active dimmer snaploader pos-abs"
-                    style="z-index:-1; background-color: rgba(167, 167, 167, 0.85); float: left; height:90px; width: 160px;"
-                  >
-                    <i class="icon photo nosnap" style="font-size:28px; margin-top:15%;"></i>
-                    <div class="ui text nosnap" style="margin-top:10px;">缺少图片</div>
-                  </div>
-                  <span class="videoscore">
-                    <i class="thumbs up icon"></i>5.5M
-                  </span>
-
-                  <span class="videosnapduration">06:13</span>
-
-                  <img
-                    id="snapimg"
-                    height="90"
-                    width="160"
-                    alt
-                    data-src="https://snap1.d.tube/ipfs/QmNjFs84UDro1agLUt7YhrCQD2xZAje9dzMJUjvAqENgfq"
-                    src="./AGAIN A YEAR JUST WENT BY SO FAST _ D.tube talk#258 - DTube_files/QmNjFs84UDro1agLUt7YhrCQD2xZAje9dzMJUjvAqENgfq"
-                    class="transition visible"
-                    style="display: inline !important;"
-                  />
-                  <br />
-                </div>
-              </div>
-              <div class="pos-rel" style="text-align:left; margin-left:8px;">
-                <div class="boxdisplayer">
-                  <div class="verticalvideosnaptitle">
-                    <a href="https://d.tube/v/hauptmann/oP4-Y2RSRGQ">
-                      <span
-                        class="customtitlelink"
-                      >WHERE WE ARE PLANNING TO GO NEXT YEAR | D.tube talk#249</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="videosnapauthor">
-                  <a href="https://d.tube/c/hauptmann">
-                    <span class="customlink">hauptmann</span>
-                  </a>
-                </div>
-                <div class="videosnapdetails">
-                  <div class="videosnaprest">553.26 DTC</div>
-                  <div class="videosnaptime">5 个月前</div>
-                </div>
-              </div>
-            </div>
-          </a>
+          <verticalvideoband></verticalvideoband>
         </div>
       </div>
     </div>
@@ -225,20 +167,18 @@
 
 
 <script>
-import play from "../../components/comment/video/player";
+import play from "../../components/video/player";
 import buttontransfersmall from "../../components/buttontransfersmall";
-import "../../../util/translate";
-import '../../../util/Util'
+import comments from "./comments/comments";
+import verticalvideoband from "../../components/video/verticalvideoband";
+import "../../../util/Util";
 export default {
   data() {
     return {
-      isAuthor:false
+      isAuthor: false
     };
   },
   computed: {
-    isLogin:function() {
-      return !(Session.get("isLogin") && Session.get("isLogin").exist ? true : false);
-    },
     userImg: function() {
       return {
         "margin-top": "4px",
@@ -264,23 +204,31 @@ export default {
   },
   components: {
     play,
-    buttontransfersmall
+    buttontransfersmall,
+    comments,
+    verticalvideoband
   },
   meteor: {
-    // videoUrl:function() {
-    //   // var videoinfo = +;
-    //   return Meteor.settings.IPFS.file_base_url+Session.get(this.$route.params.id).ipfs;
-    // },
     videoinfo: function() {
       return Session.get(this.$route.params.id);
     },
     authorInfo: function() {
-      console.log(Session.get("author"));
+      // console.log(Session.get("author"));
       return Session.get("author");
+    },
+    isLogin: function() {
+      console.log(Session.get("isLogin"));
+      return !(Session.get("isLogin") && Session.get("isLogin").exist
+        ? true
+        : false);
     }
   },
   methods: {
     subscript: function() {},
+    transfer:function() {
+      console.log("transfer")
+      $('.transferdtc').show();
+    },
     fetchVideoData: function() {
       var ipfs = this.$route.params.id;
       Meteor.call(
@@ -293,17 +241,12 @@ export default {
           if (err) {
             alert(err);
           } else {
+            console.log(res.authorinfo);
             Session.set("author", res.authorinfo);
             Session.set(ipfs, res.videoinfo);
           }
         }
       );
-    },
-    translateWapper: function(code) {
-      return translate(code);
-    },
-    dateFromWapper:function(date,type) {
-       return  dateFrom(date,type);
     }
   }
 };

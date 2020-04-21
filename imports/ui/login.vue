@@ -41,6 +41,7 @@
       </form>
     </div>
     <div v-on:click="route" id="route" />
+    
   </div>
 </template>
 
@@ -105,14 +106,8 @@ export default {
                 let address = EthUtil.pubToAddress(publicKey).toString("hex");
                 console.log(address);
                 Session.set("user.address", address);
-
-                if (typeof web3 != "undefined") {
-                  web3 = new Web3(web3.currentProvider);
-                } else {
-                  web3 = new Web3(
-                    new Web3.providers.HttpProvider(Meteor.settings.eth.address)
-                  );
-                }
+               console.log(Session.get("isLogin"));
+              
                 $("#route").click();
               } else {
                 this.loginError = true;
@@ -120,52 +115,10 @@ export default {
             }
           }
         );
-
-      //   Meteor.apply(
-      //   "getContract",
-      //   [
-      //     ["AdminModule","CenterControl"]
-      //   ],
-      //   {
-      //     wait:true
-      //   },
-      //   function(err, res) {
-      //     const address = Session.get("user.address");
-      //     if (err) {
-      //       alert(err);
-      //     } else {
-      //       console.log(res);
-      //       if (typeof web3 != "undefined") {
-      //         web3 = new Web3(web3.currentProvider);
-      //       } else {
-      //         web3 = new Web3(
-      //           new Web3.providers.HttpProvider(Meteor.settings.eth.address)
-      //         );
-      //       }
-
-      //       console.log(address);
-      //       console.log(AdminModule);
-      //       var AdminModuleCon = new web3.eth.Contract(AdminModule.abi, res.AdminModule, {
-      //         from: address, // default from address
-      //         gasPrice: "20000000000" // default gas price in wei, 20 gwei in this case
-      //       });
-      //       console.log(AdminModuleCon);
-      //       AdminModuleCon.methods
-      //         .mangeDestWhite(res.CenterControl, address,true)
-      //         .send({}, function(error, transactionHash) {
-      //           console.log(error);
-      //           console.log(transactionHash);
-      //         });
-      //     }
-      //   }
-      // );
       } else {
         this.loginError = true;
       }
     }
-
-
-
   }
 };
 </script>

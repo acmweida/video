@@ -13,7 +13,7 @@
           style="padding-left:0px;"
         >
           <h2>
-            <a href="/hotvideos">{{ translateWapper("HOME_TITLE_HOT_VIDEOS")}}</a>
+            <a href="/hotvideos">{{ translate("HOME_TITLE_HOT_VIDEOS")}}</a>
           </h2>
         </div>
         <div
@@ -21,7 +21,7 @@
           style="padding-right:0px;margin-top: 8px;"
         >
           <a href="/hotvideos" style="color:#666666">
-            <h5>{{ translateWapper("HOME_SHOW_ALL") }}</h5>
+            <h5>{{ translate("HOME_SHOW_ALL") }}</h5>
           </a>
         </div>
       </div>
@@ -37,7 +37,7 @@
           style="padding-left:0px;"
         >
           <h2>
-            <a href="/trendingvideos">{{ translateWapper("HOME_TITLE_TRENDING_VIDEOS")}}</a>
+            <a href="/trendingvideos">{{ translate("HOME_TITLE_TRENDING_VIDEOS")}}</a>
           </h2>
         </div>
         <div
@@ -45,7 +45,7 @@
           style="padding-right:0px;margin-top: 8px;"
         >
           <a href="/trendingvideos" style="color:#666666">
-            <h5>{{ translateWapper("HOME_SHOW_ALL")}}</h5>
+            <h5>{{ translate("HOME_SHOW_ALL")}}</h5>
           </a>
         </div>
       </div>
@@ -61,7 +61,7 @@
           style="padding-left:0px;"
         >
           <h2>
-            <a href="/newvideos">{{ translateWapper("HOME_TITLE_NEW_VIDEOS")}}</a>
+            <a href="/newvideos">{{ translate("HOME_TITLE_NEW_VIDEOS")}}</a>
           </h2>
         </div>
         <div
@@ -69,7 +69,7 @@
           style="padding-right:0px;margin-top: 8px;"
         >
           <a href="/newvideos" style="color:#666666">
-            <h5>{{ translateWapper("HOME_SHOW_ALL")}}</h5>
+            <h5>{{ translate("HOME_SHOW_ALL")}}</h5>
           </a>
         </div>
       </div>
@@ -81,7 +81,8 @@
 
 
 <script>
-import videoslider from "../../components/comment/video/videoslider";
+import videoslider from "../../components/video/videoslider";
+import WEB3Util from '../../../api/eth/web3'
 export default {
   data() {
     return {
@@ -93,11 +94,6 @@ export default {
   },
   components: {
     videoslider
-  },
-  methods: {
-    translateWapper: function(code) {
-      return translate(code);
-    }
   }
 };
 </script>

@@ -10,7 +10,7 @@ export const userRegister = {
     },
     run({account,publicKey,email}) {
         // console.log(publicKey)
-        return User.insert({account:account,publicKey:publicKey,email:email}); 
+        return User.insert({account:account,publicKey:publicKey,email:email,follow:0}); 
     },
     call(args,callback) {
         const options = {
@@ -24,7 +24,6 @@ export const userRegister = {
 
 Meteor.methods({
     [userRegister.name]:function(args) {
-        
         userRegister.validate.call(this,args);
         return userRegister.run.call(this,args);
     }

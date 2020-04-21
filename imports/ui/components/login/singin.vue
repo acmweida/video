@@ -263,7 +263,7 @@
   </div>-->
 
   <div class="right floated menu">
-    <div class="ui item top right floated dropdown dropdownnotification">
+    <div v-on:click="toChannel" class="ui item top right floated dropdown dropdownnotification">
       <img alt style="width:32px;height:32px;" src="/static/images/nouser.png" />
     </div>
     <div
@@ -291,7 +291,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods:{
+    toChannel() {
+      var user = Session.get("isLogin");
+      this.$router.push("/c/"+user.user.account);
+    }
+  }
+};
 </script>
 
 <style scoped>

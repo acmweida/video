@@ -1,0 +1,50 @@
+<template name='buttoneditprofile'>
+    <a href="https://steemit.com/@{{user.name}}/settings" target="_blank">
+        <div class="ui right labeled icon button blue dtube" style="float:right;margin-right: 10px !important;">
+            <div style="display:inline-block;padding: 0.8em 1em;">
+                {{ translate 'CHANNEL_EDIT_MY_PROFIL'}}
+            </div>
+            <i class="icon edit blue" style="background:white;opacity:1;"></i>
+        </div>
+    </a>
+</template>
+
+<template name='buttonlogin'>
+    <a href="/login/steem">
+        <div class="ui right labeled icon button red dtube pos-rel">
+            <div style="display:inline-block;padding: 0.8em 1em;">
+                {{ translate "TOPBAR_LOGIN"}}
+            </div>
+            <i class="icon sign in red" style="background:white;opacity:1;"></i>
+        </div>
+    </a>
+</template>
+
+<template name='buttonloginavalon'>
+    <a href="/login/dtube">
+        <div class="ui right labeled icon button red dtube pos-rel">
+            <div style="display:inline-block;padding: 0.8em 1em;">
+                {{ translate "TOPBAR_LOGIN"}}
+            </div>
+            <i class="icon sign in red" style="background:white;opacity:1;"></i>
+        </div>
+    </a>
+</template>
+
+<template name='buttonedit'>
+    <div class="ui right labeled icon button red editvideo dtube pos-rel">
+        <div style="display:inline-block;padding: 0.8em 1em;">
+            {{ translate 'VIDEO_EDIT'}}
+        </div>
+        <i class="icon edit red" style="background:white;opacity:1;"></i>
+    </div>
+</template>
+
+
+
+<template name='buttontransfersmall'>
+    <button class="ui icon grey button transferdtcbtn pos-rel">
+        <i class="icon gift" style="color: black;"></i>
+    </button>
+    {{>senddtcmodal}}
+</template>

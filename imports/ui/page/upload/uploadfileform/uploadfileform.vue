@@ -51,6 +51,7 @@
 <script>
 import "../../../../util/translate";
 import WEB3Util from "../../../../api/eth/web3";
+import VideoCreateLog from '../../../collections/collection'
 export default {
   data() {
     return {
@@ -64,6 +65,9 @@ export default {
       selected: "",
       UPLOAD_TITLE: "题目"
     };
+  },
+  meteor:{
+    videolog:[]
   },
   watch: {
     title: function(oldvalue, newvalue) {
@@ -130,13 +134,10 @@ export default {
       callback = function(err,res) {
         console.log(err);
         console.log(res);
-        if (err) {
+        if (err) {    receipt
           alert(err);
         } else {
-          var _resid = res;
-          if (_resid == "0x00000000000000000000000000000000") {
-            _resid = "0xe108ec3190139db7217218b2b7580171";
-          }
+          var _resid = res.resId;
           if (_resid == "0x00000000000000000000000000000000") {
             toastr.error(
               translate("UPLOAD_ERROR_SUBMIT_BLOCKCHAIN"),
@@ -148,11 +149,13 @@ export default {
               translate("USERS_SUCCESS")
             );
             Session.set("resid", _resid);
+            VideoCreateLog.insert(res.receipt);
             $("#saveinfo").click();
           }
         }
       };
       WEB3Util.createVideo(address, videoHash, [], pictureHash, title, callback);
+      //  WEB3Util.insertResource("0x1",address, videoHash, [], pictureHash, title, callback);
     }
   }
 };

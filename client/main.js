@@ -2,7 +2,10 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from 'vue-router'
 import VueMeteorTracker from 'vue-meteor-tracker';
+import SuiVue from 'semantic-ui-vue';
+import 'semantic-ui-css/semantic.min.css';
 Vue.use(VueMeteorTracker);
+Vue.use(SuiVue);
 Vue.use(VueRouter);
 import './main.html';
 import '../imports/startup/client/start.js'
@@ -18,7 +21,6 @@ Meteor.startup(() => {
     mode: 'history',
     routes,
   });
-
   
   new Vue({
     el: '#app',

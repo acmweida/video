@@ -10,10 +10,16 @@
   "dependencies": {
     "@babel/runtime": "^7.8.3",
     "bignumber": "^1.1.0",
+    "browserslist": "^3.0.0",
     "ethereumjs-util": "^6.2.0",
     "ethereumjs-wallet": "^0.6.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "meteor-node-stubs": "^1.0.0",
+    "owl.carousel": "^2.3.4",
+    "postcss": "^6.0.23",
+    "postcss-load-config": "^1.2.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-vue": "^0.10.1",
     "vue": "^2.6.11",
     "vue-lazyload": "^1.3.3",
     "vue-meteor-tracker": "^2.0.0-beta.5",
@@ -26,5 +32,18 @@
       "server": "server/main.js"
     },
     "testModule": "tests/main.js"
+  },
+  "devDependencies": {
+    "video.js": "^7.7.5",
+    "autoprefixer": "^6.3.1"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    }
   }
 }
