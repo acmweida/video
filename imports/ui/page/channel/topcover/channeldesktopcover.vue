@@ -13,7 +13,7 @@
       >
         <h1>{{author.account}}</h1>
         <i class="icon red play"></i>
-        <strong>{{ author.money ? author.money : 0 }} ETH</strong>
+        <strong>{{ author.gratuityNum ? author.gratuityNum : 0 }} ETH</strong>
         <br /><div style="margin-top:15px"><strong >{{author.desc ? author.desc : translate("AUTHOR_DESC_NO")}}</strong></div>
       </div>
       <div class="ui image circular" v-bind:style="authorImg"></div>

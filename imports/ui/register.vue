@@ -168,7 +168,7 @@ export default {
       //   EthUtil.toBuffer(newAccount.privateKey)
       // );
           let publicKey = EthUtil.privateToPublic(
-        EthUtil.toBuffer("0x65e002ab2e6fbe69380a76e236b3d8ddc79456678e56c44d876206595f8ba362")
+        EthUtil.toBuffer("0xefdd9a49c2db49e839a646b795da4dee2b6c7c4d78e3ccee337b0077d7ac12a8")
       );
       //  let publicKey = EthUtil.privateToPublic(EthUtil.toBuffer("0xa1b6bedba8993ee1a03fb15003538986f42f08b8ff243e1def94aa3b76adf5ef"));
       // console.log(newAccount.privateKey.length)

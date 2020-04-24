@@ -17,6 +17,20 @@
           style="display:inline-block;"
           data-tab="second"
         >{{ translate('CHANNEL_PERSON_INFO')}}</a>
+          <a
+          v-if="isAuthor"
+          v-on:click="toTransactionLog"
+          class="item transaction"
+          style="display:inline-block;"
+          data-tab="second"
+        >{{ translate('TRANSFOR_LOG')}}</a>
+          <a
+          v-if="isAuthor"
+          v-on:click="toTransactionLog"
+          class="item transaction"
+          style="display:inline-block;"
+          data-tab="second"
+        >{{ translate('TRANSFOR_LOG')}}</a>
         <!-- {{#if equals author.name activeUsername}} -->
         <!-- {{/if}} -->
       </div>
@@ -44,6 +58,17 @@
           <div class="ui large centered inline text loader"></div>
         </div>
       </div>
+      <div
+        v-if="currentTab == 'third'"
+        class="ui bottom attached tab segment active"
+        data-tab="third"
+        style="margin:auto;padding-left: 1px;padding-right:1px;border-width: 0px;background: transparent;"
+      >
+        <div class="ui infinite">
+          <transforto v-if="author"></transforto>
+          <div class="ui large centered inline text loader"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +78,7 @@ import { User, Video } from "../../collections/collection";
 import videoband from "../../components/video/videoband";
 import channeldesktopcover from "./topcover/channeldesktopcover";
 import personal from "./personal/personal";
+import transforto from "./transforlog/transforto"
 export default {
   data() {
     return {
@@ -71,7 +97,8 @@ export default {
   components: {
     channeldesktopcover,
     videoband,
-    personal
+    personal,
+    transforto
   },
   methods: {
     toActivit: function() {
@@ -88,6 +115,15 @@ export default {
       this.currentTab = "first";
       $(".menu .item.videos").click();
       $(".menu .item.videos")
+        .addClass("active")
+        .siblings()
+        .removeClass("active");
+    },
+    toTransactionLog: function() {
+      if (this.currentTab == "third") return;
+      this.currentTab = "third";
+      $(".menu .item.transaction").click();
+      $(".menu .item.transaction")
         .addClass("active")
         .siblings()
         .removeClass("active");

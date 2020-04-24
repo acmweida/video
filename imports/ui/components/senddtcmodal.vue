@@ -24,7 +24,7 @@
               <label>{{ translate('TRANSFER_MEMO')}}</label>
               <div class="ui left icon input">
                 <i class="pencil icon"></i>
-                <input type="text" id="transfer_memo" value />
+                <input type="text" id="transfer_memo"  v-model="memo" />
               </div>
             </div>
           </div>
@@ -51,13 +51,14 @@
       </div>
     </div>
     <div id="transfor" v-on:click="transfor"></div>
+   
   </div>
 </template>
 
 <script>
 import Web3Util from "../../api/eth/web3";
 import EthUtil from "ethereumjs-util";
-import { Order, Video } from "../collections/collection";
+import { Order, Video,User } from "../collections/collection";
 export default {
   props: {
     author: Object,
@@ -65,13 +66,15 @@ export default {
   },
   data() {
     return {
-      value: 1
+      value: 1,
+      memo:""
     };
   },
   meteor: {
     $subscribe: {
       order: [],
-      video: []
+      video: [],
+      user:[]
     }
   },
   methods: {
@@ -91,7 +94,11 @@ export default {
           alert(err);
         } else {
           console.log(res);
-          if (res < valueToWei) {
+          console.log(valueToWei)
+          console.log(typeof res);
+          console.log(typeof valueToWei);
+          console.log(res < valueToWei);
+          if (new Number(res) < new Number(valueToWei)) {
             toastr.info(
               translate("CHANNEL_SAVINGS_NOT"),
               translate("TIPS_TITLE")
@@ -105,6 +112,14 @@ export default {
     },
     transfor() {
       var from = Session.get("user.address");
+      var video = this.video;
+      if (video < 0) {
+        return ;
+      }
+      let address = ""// EthUtil.pubToAddress(new Buffer("0x"+video.author)).toString("hex");
+      console.log(address)
+      var author = this.author;
+      var memo = this.memo
       // var resId = this.video.resid;
       // console.log(resId)
       // cb = function(err, res) {
@@ -129,19 +144,23 @@ export default {
           } else {
               console.log(res)
               toastr.success(translate("TRANSFOR_SUCCESS"),translate("USERS_SUCCESS"))
-              const groceriesId = order.insert(res);
+              const groceriesId = Order.insert({transsctionhash:res,from:from,video:resId,to:address,value:value,message:memo,createDate:new Date()});
               if (groceriesId)  {
                   toastr.success(translate("TRANSFOR_LOG_SUCCESS"),translate("USERS_SUCCESS"));
-                  Video.update({resId:resId},{ $inc: { gratuityNum:value }})
+                  Video.update({_id:video._id},{ $inc: { gratuityNum:value }});
+                  User.update({_id:author._id},{ $inc: { gratuityNum:value }});
               }
-
           }
       }
       Web3Util.buy(from,valueToWei,resId,cb)
   
       // var to = EthUtil.pubToAddress(this.video.author.toString("hex")).toString("hex");
       // Web3Util.transfor(from,to,valueToWei);
+    },
+    changeGratuityNum:function() {
+      this.video.gratuityNum = this.video.gratuityNum + this.value
     }
   }
 };
 </script>
+

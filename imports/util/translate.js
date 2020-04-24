@@ -68,7 +68,6 @@ var codeToInfo = {
     "SEARCH_RESULT": "成绩",
     "SEARCH_RESULTS": "成绩",
     "SETTINGS_DROPDOWN_VOTING": "投票",
-    "SETTINGS_DROPDOWN_NSFW_VIDEOS": "成人视屏",
     "SETTINGS_DROPDOWN_SHOW": "展示出来",
     "SETTINGS_DROPDOWN_FULLY_HIDDEN": "完全隐藏",
     "SETTINGS_DROPDOWN_IPFS_SETTINGS": "IPFS 设定",
@@ -218,7 +217,10 @@ var codeToInfo = {
     "TRANSFER_MEMO":"留言",
     "CHANNEL_SAVINGS_NOT":"余额不足",
     "TRANSFOR_SUCCESS":"打赏成功",
-    "TRANSFOR_LOG_SUCCESS":"打赏记录成功"
+    "TRANSFOR_LOG_SUCCESS":"打赏记录成功",
+    "TRANSFOR_LOG":"打赏记录",
+    "NO_TRANSFOR":"没有交易记录",
+    "ACCEPT_LOG": "收入记录"
 }
 
 translate = function(code) {

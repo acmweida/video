@@ -1,6 +1,8 @@
 <template>
   <div class="videoband">
-      <videosnap v-for="video in videos" v-bind:key="video._id" v-bind:video="video" v-bind:isAuthor="isAuthor"></videosnap>
+      <div  v-if="videos">
+      <videosnap  v-for="video in videos" v-bind:key="video._id" v-bind:video="video" v-bind:isAuthor="isAuthor"></videosnap>
+      </div>
   </div>
 </template>
 
@@ -15,12 +17,13 @@ export default {
     videosnap,
     videosnapslider
   },
-  data() {
-    // console.log(this.videoInfo)
-    return {
-      videos: this.videoInfo.videos,
-      isAuthor: this.videoInfo.isAuthor
-    };
+  computed:{
+     isAuthor: function() {
+      return this.videoInfo.isAuthor
+     },
+     videos:function() {
+      return this.videoInfo.videos;
+    }
   }
 };
 </script>

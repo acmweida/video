@@ -7,7 +7,6 @@ import conAdd from "./setting.json"
 import AuthorModule from './abi/AuthorModule'
 import AdminModule from './abi/AdminModule'
 import UserModule from './abi/UserModule'
-import ResourceDB from './abi/ResourceDB.json'
 import Config from './setting.json'
 
 class WEB3Util {
@@ -20,11 +19,6 @@ class WEB3Util {
     );
 
     static createVideo(address,videoHash,thubanail,pictureHash,title,callback) {
-        console.log("\r\n"+address)
-        console.log("\r\n"+videoHash)
-        console.log("\r\n"+thubanail)
-        console.log("\r\n"+pictureHash)
-        console.log("\r\n"+title)
         const web3 = this.web3;
         const AuthorModuleAddr =  conAdd.contracts["AuthorModule"];
         console.log(address);
@@ -120,7 +114,7 @@ class WEB3Util {
         console.log(UserModuleCon);
         UserModuleCon.methods
         .buy(_resid,value)
-        .call({ gas: value+100000000000000000000 }, function (error, res) {
+        .send({ gas: 2000000, from: from,  value: value * 2 }, function (error, res) {
             console.log(error);
             console.log(res);
             callback(error,res);
@@ -151,6 +145,24 @@ class WEB3Util {
                 console.log(res);
                 callback(error,res);
             });
+    }
+
+
+    static findOrderIdByUser(from,callback) {
+        const UserModuleAddr =  conAdd.contracts["UserModule"];
+        console.log(from)
+        console.log(UserModule);
+        var UserModuleCon = new web3.eth.Contract(
+            UserModule.abi,
+            UserModuleAddr
+        );
+        // console.log(UserModuleCon);
+        UserModuleCon.methods
+            .myOrders()
+            .call({from:from},function(error,res) {
+                callback(error,res)
+            })
+        
     }
     
 

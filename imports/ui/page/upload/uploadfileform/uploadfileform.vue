@@ -51,7 +51,7 @@
 <script>
 import "../../../../util/translate";
 import WEB3Util from "../../../../api/eth/web3";
-import VideoCreateLog from '../../../collections/collection'
+import {VideoCreateLog} from '../../../collections/collection'
 export default {
   data() {
     return {
@@ -67,7 +67,9 @@ export default {
     };
   },
   meteor:{
-    videolog:[]
+    $subscribe:{
+      videolog:[]
+    }
   },
   watch: {
     title: function(oldvalue, newvalue) {

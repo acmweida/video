@@ -10,7 +10,7 @@ export const userRegister = {
     },
     run({account,publicKey,email}) {
         // console.log(publicKey)
-        return User.insert({account:account,publicKey:publicKey,email:email,follow:0}); 
+        return User.insert({account:account,publicKey:publicKey,email:email,follow:0,gratuityNum:0}); 
     },
     call(args,callback) {
         const options = {

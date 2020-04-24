@@ -40,12 +40,12 @@
           <div class="details wid-ful">
             <div class="videoleftdetails wid-ful" style="padding: 10px;">
               <div class="videorightdetails">
-                <div class="videopayout">{{videoinfo.gratuityNum}} DTC</div>
+                <div class="videopayout">{{videoinfo.gratuityNum}} ETH</div>
               </div>
               <div class="ui left tiny circular avatar floated image" v-bind:style="userImg"></div>
 
               <div class="channelLink" style="margin-top:10px;">
-                <a v-bind:href="'/user/'+authorInfo.publicKey">{{authorInfo.account}}</a>
+                <a v-bind:href="'/c/'+authorInfo.account">{{authorInfo.account}}</a>
               </div>
 
               <div v-on:click="subscript" class="ui red dtube button subscribe" tabindex="0">
