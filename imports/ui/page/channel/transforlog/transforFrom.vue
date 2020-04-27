@@ -14,8 +14,8 @@
         <thead>
           <tr>
              <th>transsctionhash</th>
-            <th>to</th>
-            <th>video</th>
+            <th>from</th>
+            <th>video/me</th>
             <th>value</th>
             <th>time</th>
             <th>message</th>
@@ -24,8 +24,8 @@
         <tbody>
           <tr v-for="order in orders" v-bind:key="order._id" >
             <td data-label="transsctionhash" v-bind:title="order.transsctionhash"> <span > {{order.transsctionhash}} </span></td>
-            <td data-label="to" > <span v-bind:title="order.to">{{order.to}}</span></td>
-            <td data-label="video">{{order.video}}</td>
+            <td data-label="to" > <span v-bind:title="order.from">{{order.from}}</span></td>
+            <td data-label="video"> <span v-bind:title="order.video">{{order.video}}</span></td>
             <td data-label="value">{{order.value}}</td>
             <td data-label="time">{{order.createDate}}</td>
             <td data-label="message">{{order.message}}</td>
@@ -58,8 +58,11 @@ export default {
     }
   },
   created() {
-    var address = Session.get("user.address");
-    this.orders = Order.find({ from: address }).fetch();
+    var user = Session.get("isLogin");
+    console.log(user);  
+    var address = "0x"+ user.user.publicKey
+    console.log(address)
+    this.orders = Order.find({ to: address }).fetch();
   }
 };
 </script>

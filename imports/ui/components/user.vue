@@ -1,17 +1,17 @@
 <template>
   <div>
     <Login v-if="loginState"></Login>
-    <Singin v-else></Singin>
+    <Person v-else></Person>
   </div>
 </template>
 
 <script>
 import Login from "./login/login";
-import Singin from "./login/singin";
+import Person from "./login/person";
 export default {
   components: {
     Login,
-    Singin
+    Person
   },
   meteor: {
     loginState() {

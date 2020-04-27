@@ -2,6 +2,7 @@ import {Video}  from '../../api/mongo/db'
 import {User} from '../../api/mongo/db'
 import {Order} from '../../api/mongo/db'
 import {VideoCreateLog} from '../../api/mongo/db'
+import {Sub} from '../../api/mongo/db'
 Meteor.publish('nawVideos', function () {
     var res = Video.find({}, { limit: 25, sort: { createDate: -1 } });
     return res;
@@ -31,4 +32,11 @@ Meteor.publish('videolog',function() {
     var res = VideoCreateLog.find({});
     return res;
 })
+
+
+Meteor.publish('sub',function() {
+    var res = Sub.find({});
+    return res;
+})
+
 

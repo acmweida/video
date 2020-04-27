@@ -266,19 +266,19 @@
     <div v-on:click="toChannel" class="ui item top right floated dropdown dropdownnotification">
       <img alt style="width:32px;height:32px;" src="/static/images/nouser.png" />
     </div>
-    <div
+    <div v-on:click="toActive"
       class="ui item top right floated dropdown dropdownnotification"
       tabindex="0"
     >
       <!-- <i id="notification" class="alarm icon" style="font-size:1.3em; margin:0;"></i> -->
-      <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">消息</h4>
+      <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">动态</h4>
     </div>
-    <div
+    <!-- <div
       class="ui item top right floated dropdown dropdownnotification"
       tabindex="0"
     >
-      <!-- <i id="notification" class="alarm icon" style="font-size:1.3em; margin:0;"></i> -->
-      <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">收藏</h4>
+       <i id="notification" class="alarm icon" style="font-size:1.3em; margin:0;"></i> -->
+      <!-- <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">收藏</h4>
     </div>
     <div
       class="ui item top right floated dropdown dropdownsettings needsclick"
@@ -286,7 +286,7 @@
       tabindex="0"
     >
       <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0; ">历史</h4>
-    </div>
+    </div> --> 
   </div>
 </template>
 
@@ -296,6 +296,10 @@ export default {
     toChannel() {
       var user = Session.get("isLogin");
       this.$router.push("/c/"+user.user.account);
+    },
+    toActive() {
+       var user = Session.get("isLogin");
+       this.$router.push("/a/"+user.user.account);
     }
   }
 };

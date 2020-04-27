@@ -1,8 +1,8 @@
 <template name='channeldesktopcover'>
   <div id="channelcover" class="channelcover" v-bind:class="cover_image">
     <img
-      v-if="author.cover_image"
-      v-bind:src="author.cover_image"
+      v-if="authorinfo.cover_image"
+      v-bind:src="authorinfo.cover_image"
       class="pos-abs"
       style="object-fit: cover;width: 100%;height: 100%;"
     />
@@ -11,49 +11,66 @@
         class="pos-abs"
         style="margin-left:160px;;top:20%;z-index:10;color:white;text-shadow: 2px 2px 2px #262626;"
       >
-        <h1>{{author.account}}</h1>
+        <h1>{{authorinfo.account}}</h1>
         <i class="icon red play"></i>
-        <strong>{{ author.gratuityNum ? author.gratuityNum : 0 }} ETH</strong>
-        <br /><div style="margin-top:15px"><strong >{{author.desc ? author.desc : translate("AUTHOR_DESC_NO")}}</strong></div>
+        <strong>{{ authorinfo.gratuityNum ? authorinfo.gratuityNum : 0 }} ETH</strong>
+        <br />
+        <div style="margin-top:15px">
+          <strong>{{authorinfo.desc ? authorinfo.desc : translate("AUTHOR_DESC_NO")}}</strong>
+        </div>
       </div>
       <div class="ui image circular" v-bind:style="authorImg"></div>
-      <div
-        v-if="isSubscribedTo"
-        class="pos-rel"
-        tabindex="0"
-        style="float: right;top: 100px;margin-right: 10px !important;"
-      >
-        <buttonunsubscribe v-bind:subCount="author.follow"></buttonunsubscribe>
-      </div>
-      <div
-        v-else
-        class="pos-rel"
-        tabindex="0"
-        style="float: right;top: 100px;margin-right: 10px !important;"
-      >
-        <buttonsubscribe v-bind:subCount="author.follow"></buttonsubscribe>
-      </div>
-      <div
-        class="pos-rel"
-        tabindex="0"
-        style="float: right;top: 100px;margin-right: 10px !important;"
-      >
-        <buttontransfer v-bind:author="author"></buttontransfer>
+
+      <div v-if="!isAuthor">
+        <div
+          v-if="isSubscribedTo"
+          class="pos-rel"
+          tabindex="0"
+          style="float: right;top: 100px;margin-right: 10px !important;"
+        >
+          <buttonunsubscribe v-on:cancelSub="cancelSub" v-bind:subCount="authorinfo.follow"></buttonunsubscribe>
+        </div>
+        <div
+          v-else
+          class="pos-rel"
+          tabindex="0"
+          style="float: right;top: 100px;margin-right: 10px !important;"
+        >
+          <buttonsubscribe v-on:addSub="addSub" v-bind:subCount="authorinfo.follow"></buttonsubscribe>
+        </div>
+        <div
+          class="pos-rel"
+          tabindex="0"
+          style="float: right;top: 100px;margin-right: 10px !important;"
+        >
+          <buttontransfer v-bind:author="authorinfo"></buttontransfer>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import buttontransfer from '../../../components/button/buttontransfer'
+import buttontransfer from "../../../components/button/buttontransfer";
 import buttonunsubscribe from "../../../components/button/buttonunsubscribe";
 import buttonsubscribe from "../../../components/button/buttonsubscribe";
+import { User,Sub } from "../../../collections/collection";
 export default {
   props: {
     author: Object
   },
+  meteor: {
+    $subscribe: {
+      user: [],
+      sub:[]
+    }
+  },
   data() {
     return {
+         user:null,
+      authorinfo:this.author,
+      subinfo:null,
+      isSubscribedTo:false,
       authorImg: {
         "background-size": "cover",
         float: "left",
@@ -64,8 +81,8 @@ export default {
         height: "128px",
         "background-image":
           "url(" +
-          (this.author && this.author.pic
-            ? Meteor.settings.IPFS.file_base_url + this.author.pic
+          (this.authorinfo && this.authorinfo.pic
+            ? Meteor.settings.IPFS.file_base_url + this.authorinfo.pic
             : "/static/images/user.png") +
           ")"
       }
@@ -76,14 +93,43 @@ export default {
     buttonsubscribe,
     buttontransfer
   },
+  created() {
+         this.authorinfo = this.author;
+        var user = Session.get("isLogin");
+        console.log(user)
+        this.user = user;
+        if (user) {
+           var userSub = Sub.findOne({userid:this.user.publicKey});
+           this.userSub = userSub;
+        }
+        this.isSubscribedTo = !this.user || !this.userSub || (this.userSub && this.userSub.subs.indexOf(this.authorinfo.publicKey) == -1) ? false : true;
+  },
   computed: {
-    isSubscribedTo: function() {
-      return false;
-    },
+    // isSubscribedTo: function() {
+    //   // if (!this.user) {
+    //   //   return false;
+    //   // }
+    //   // // console.log(this.userSub)
+    //   // if (!this.userSub ) {
+    //   //   return false;
+    //   // }
+    //   // // console.log(this.userSub.subs.indexOf(this.author.publicKey));
+    //   // if (this.userSub && this.userSub && this.userSub.subs.indexOf(this.authorinfo.publicKey) == -1) {
+    //   //  return false;
+    //   // } 
+    //   return 
+    // },
     cover_image: function() {
       // console.log(this.author.cover_image)
-      if (!this.author.cover_image) return this.randomBackgroundColor();
+      if (!this.authorinfo.cover_image) return this.randomBackgroundColor();
       else return "";
+    },
+    isAuthor: function() {
+      if (!this.authorinfo) return false;
+      // var user = Session.get("isLogin");
+      // console.log(this.author);
+      // var res = {};
+      return this.user && this.user.user.publicKey == this.authorinfo.publicKey;
     }
   },
   methods: {
@@ -107,24 +153,37 @@ export default {
           bgcolor = "channelbge";
       }
       return bgcolor;
+    },
+    cancelSub: function() {
+      console.log("xxxx");
+      // console.log(user);
+      if (!this.user) {
+        this.$router.replace("/login");
+      }
+      // var subinfo = Sub.findOne({userid:user.publicKey});
+      Sub.update({_id:this.userSub._id},{$pull:{subs:this.authorinfo.publicKey}});
+      User.update({_id:this.authorinfo._id},{$inc:{follow:-1}})
+      this.authorinfo = User.findOne({_id:this.authorinfo._id});
+      this.isSubscribedTo = !this.isSubscribedTo;
+    },
+    addSub: function() {
+      console.log("xxxx");
+      // console.log(user);
+  
+      if (!this.user) {
+        this.$router.replace("/login");
+        return ;
+      }
+    
+      if (this.userSub) {
+        Sub.update({_id:this.userSub._id},{ $push: { subs: this.authorinfo.publicKey }});
+      } else {
+        Sub.insert({userid:this.user.publicKey,subs:[this.authorinfo.publicKey]});
+      }
+        User.update({_id:this.authorinfo._id},{$inc:{follow:1}})
+        this.authorinfo = User.findOne({_id:this.authorinfo._id});
+        this.isSubscribedTo = !this.isSubscribedTo;
     }
   }
-  //     mainUser: function () {
-  //   return Users.findOne({ username: Session.get('activeUsername') })
-  // },
-  // user: function () {
-  //   return {
-  //     name: FlowRouter.getParam("author")
-  //   }
-  // },
-  // author: function () {
-  //   return ChainUsers.findOne({ name: FlowRouter.getParam("author") })
-  // },
-  // activeUser: function () {
-  //   return Session.get('activeUsername')
-  // },
-  // subCount: function () {
-  //   return ChainUsers.findOne({ name: FlowRouter.getParam("author") }).followersCount || 0
-  // }
 };
 </script>

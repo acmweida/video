@@ -102,6 +102,7 @@ export default {
               if (res.exist) {
                 // console.log(this.loginSess);
                 Session.set("isLogin", res);
+                // localStorage.set("isLogin",res);
                 // console.log("ssss");
                 let address = EthUtil.pubToAddress(publicKey).toString("hex");
                 console.log(address);

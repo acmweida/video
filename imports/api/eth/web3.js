@@ -114,7 +114,7 @@ class WEB3Util {
         console.log(UserModuleCon);
         UserModuleCon.methods
         .buy(_resid,value)
-        .send({ gas: 2000000, from: from,  value: value * 2 }, function (error, res) {
+        .send({ gas: 2000000, from: from,  value: value }, function (error, res) {
             console.log(error);
             console.log(res);
             callback(error,res);

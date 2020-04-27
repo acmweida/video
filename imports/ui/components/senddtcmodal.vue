@@ -16,8 +16,13 @@
             <div class="field">
               <label>{{ translate('TRANSFER_AMOUNT')}}</label> -->
               <div class="ui left icon input">
-                <i class="calculator icon"></i>
-                <input type="number" min="0.01" step="0.01" id="transfer_amount" v-model="value" />
+              
+                <select v-model="value">
+                    <i class="calculator icon"></i>
+                  <option disabled value="1">请选择</option>
+                   <option>1</option>
+                  <option>2</option>
+                </select>
               </div>
             </div>
             <div class="field">
@@ -116,7 +121,7 @@ export default {
       if (video < 0) {
         return ;
       }
-      let address = ""// EthUtil.pubToAddress(new Buffer("0x"+video.author)).toString("hex");
+      let address = "0x"+video.author;
       console.log(address)
       var author = this.author;
       var memo = this.memo
@@ -146,8 +151,9 @@ export default {
               toastr.success(translate("TRANSFOR_SUCCESS"),translate("USERS_SUCCESS"))
               const groceriesId = Order.insert({transsctionhash:res,from:from,video:resId,to:address,value:value,message:memo,createDate:new Date()});
               if (groceriesId)  {
+                  value = parseInt(value);
                   toastr.success(translate("TRANSFOR_LOG_SUCCESS"),translate("USERS_SUCCESS"));
-                  Video.update({_id:video._id},{ $inc: { gratuityNum:value }});
+                  Video.update({_id:video._id},{ $inc: { gratuityNum: value}});
                   User.update({_id:author._id},{ $inc: { gratuityNum:value }});
               }
           }

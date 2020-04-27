@@ -7,6 +7,7 @@ import Register from '../imports/ui/register'
 import Upload from '../imports/ui/page/upload/upload'
 import VideoPlay from '../imports/ui/page/video/videoplay'
 import Channel from '../imports/ui/page/channel/channel'
+import Activit from '../imports/ui/page/activit/activit'
 
 export default [
   { path: '/', name: 'home', component: Home },
@@ -15,5 +16,6 @@ export default [
   { path: '/upload', name: 'upload', component: Upload },
   { path: '/video/:id', name: 'videoplay', component: VideoPlay },
   { path: '/c/:id', name: 'channel', component: Channel },
+  { path: '/a/:id', name: 'activit',component:Activit},
   { path: '*', name: 'not-found', component: NotFound },
 ]

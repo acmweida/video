@@ -22,20 +22,20 @@
           v-on:click="toTransactionLog"
           class="item transaction"
           style="display:inline-block;"
-          data-tab="second"
+          data-tab="third"
         >{{ translate('TRANSFOR_LOG')}}</a>
           <a
           v-if="isAuthor"
-          v-on:click="toTransactionLog"
-          class="item transaction"
+          v-on:click="toTransactionFrom"
+          class="item transactionfrom"
           style="display:inline-block;"
-          data-tab="second"
-        >{{ translate('TRANSFOR_LOG')}}</a>
+          data-tab="fourth"
+        >{{ translate('ACCEPT_LOG')}}</a>
         <!-- {{#if equals author.name activeUsername}} -->
         <!-- {{/if}} -->
       </div>
       <div
-        v-if="currentTab == 'first'"
+        v-show="currentTab == 'first'"
         class="ui bottom attached tab segment active"
         data-tab="first"
         style="margin:auto;padding-left: 1px;padding-right:1px;border-width: 0px;background: transparent;"
@@ -69,6 +69,17 @@
           <div class="ui large centered inline text loader"></div>
         </div>
       </div>
+        <div
+        v-if="currentTab == 'fourth'"
+        class="ui bottom attached tab segment active"
+        data-tab="third"
+        style="margin:auto;padding-left: 1px;padding-right:1px;border-width: 0px;background: transparent;"
+      >
+        <div class="ui infinite">
+          <transfrom  v-if="author"></transfrom>
+          <div class="ui large centered inline text loader"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -79,6 +90,7 @@ import videoband from "../../components/video/videoband";
 import channeldesktopcover from "./topcover/channeldesktopcover";
 import personal from "./personal/personal";
 import transforto from "./transforlog/transforto"
+import transfrom from "./transforlog/transforFrom"
 export default {
   data() {
     return {
@@ -98,7 +110,8 @@ export default {
     channeldesktopcover,
     videoband,
     personal,
-    transforto
+    transforto,
+    transfrom
   },
   methods: {
     toActivit: function() {
@@ -124,6 +137,15 @@ export default {
       this.currentTab = "third";
       $(".menu .item.transaction").click();
       $(".menu .item.transaction")
+        .addClass("active")
+        .siblings()
+        .removeClass("active");
+    },
+    toTransactionFrom:function() {
+        if (this.currentTab == "fourth") return;
+      this.currentTab = "fourth";
+      $(".menu .item.transactionfrom").click();
+      $(".menu .item.transactionfrom")
         .addClass("active")
         .siblings()
         .removeClass("active");
