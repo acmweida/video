@@ -89,7 +89,7 @@ export default {
     confirm: function() {
       var address = Session.get("user.address");
       if (!address) {
-        this.$router.replace("/login");
+        this.$router.replace("/user/login");
         return;
       }
       var value = this.value;

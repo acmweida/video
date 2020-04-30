@@ -49,6 +49,7 @@ var codeToInfo = {
     "HOME_SHOW_ALL": "显示全部",
     "LOGIN_PLACEHOLDER_STEEM_USERNAME": "STEEM 用户名",
     "USERNAME_FORMAT_ERROR":"用户名格式错误",
+    "EMAIL_FORMAT_ERROR":"Email格式错误",
     "LOGIN_PLACEHOLDER_PRIVATE_POSTING_KEY": "Private Posting Key私钥",
     "LOGIN_REMEMBER_ME": "记得我",
     "LOGIN_BUTTON_LOGIN": "登入",
@@ -220,7 +221,8 @@ var codeToInfo = {
     "TRANSFOR_LOG_SUCCESS":"打赏记录成功",
     "TRANSFOR_LOG":"打赏记录",
     "NO_TRANSFOR":"没有交易记录",
-    "ACCEPT_LOG": "收入记录"
+    "ACCEPT_LOG": "收入记录",
+    "LOGIN_ERROR":"用户名或这密码错误"
 }
 
 translate = function(code) {

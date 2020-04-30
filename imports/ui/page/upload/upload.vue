@@ -158,7 +158,7 @@ export default {
   created: function() {
     var userinfo = Session.get("isLogin");
     if (userinfo && userinfo.exist === true);
-    else this.$router.replace("/login");
+    else this.$router.replace("/user/login");
   },
   computed: {
     // tempContent: function() {

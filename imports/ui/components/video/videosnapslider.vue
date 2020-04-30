@@ -1,6 +1,6 @@
 <template>
   <div class="videosnap wid-ful" style="max-width:248px;">
-    <a v-bind:title="title" v-on:click="player">
+    <a v-bind:title="title"  :href="/video/+video.ipfs" target="_blank">
       <div id="snaphover" class="videosnapsnap wid-ful" style="height:118px;">
         <div class="pos-abs wid-ful" style="z-index:1; height:118px;">
           <span class="videoscore">
@@ -45,13 +45,13 @@
     </a>
     <div class="boxdisplayer">
       <div class="videosnaptitle">
-        <a  v-on:click="player">
+        <a  :href="/video/+video.ipfs" target="_blank">
           <span class="customtitlelink" style="margin-top: 10px;">{{title}}</span>
         </a>
       </div>
     </div>
     <div class="videosnapauthor">
-      <a v-on:click="player">
+      <a :href="/c/+username" target="_blank">
         <span class="customlink">{{username}}</span>
       </a>
     </div>
@@ -73,7 +73,7 @@ export default {
       imgUrl: Meteor.settings.IPFS.file_base_url + this.video.cover,
       title: this.video.title,
       author: this.video.author,
-      userUrl: "/user/" + this.video.author,
+      userUrl: "/c/" + this.video.author,
       gratuityNum: numForm(this.video.gratuityNum),
       date: this.dateFrom(new Date(this.video.createDate))
     };
@@ -105,20 +105,11 @@ export default {
         }
       );
 
-      //   var username = User.findOne({publicKey:this.video.author},{account:1});
-      //   if (!username ) {
-      //     return "...";
-      //   }
-      //  // console.log(username);
-      //  /**
-      //   * todo:只查询用户名
-      //   */
-      //   return username.account;
     }
   },
   methods: {
     player() {
-      this.$router.replace("/video/" + this.video.ipfs);
+      this.$router.replace("/user/video/" + this.video.ipfs);
     }
   }
 };

@@ -100,10 +100,14 @@ export default {
   computed: {
     isAuthor: function() {
       if (!this.author) return false;
-      var user = Session.get("isLogin");
-      console.log(this.author);
+      // var user = Session.get("isLogin");
+      var user = JSON.parse(localStorage.getItem("isLogin").toString());
+
+      // console.log(user.user);
+      // console.log(this.author.publicKey)
+      var author = this.author;
       var res = {};
-      return user && user.user.publicKey == this.author.publicKey;
+      return this.author && user && user.user.publicKey == this.author.publicKey;
     }
   },
   components: {
@@ -154,7 +158,7 @@ export default {
   meteor: {
     $subscribe: {
       user: [],
-      video: []
+      videoAll: []
     },
     author: function() {
       var res =  User.findOne({ account: this.$route.params.id });

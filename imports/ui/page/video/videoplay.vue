@@ -44,8 +44,8 @@
               </div>
               <div class="ui left tiny circular avatar floated image" v-bind:style="userImg"></div>
 
-              <div v-on:click="toChannel" class="channelLink" style="margin-top:10px;">
-                <a >{{authorInfo.account}}</a>
+              <div  class="channelLink" style="margin-top:10px;">
+                <a  :href="/c/+authorInfo.account" target="_blank" >{{authorInfo.account}}</a>
               </div>
 
               <div v-on:click="subscript" class="ui red dtube button subscribe" tabindex="0">
@@ -65,7 +65,7 @@
           </div>
         </div>
            <buttontransfersmall v-if="authorInfo && videoinfo" v-bind:author="authorInfo" v-bind:video="videoinfo" ></buttontransfersmall>
-        <div v-if="isAuthor" id="editvideosegment" class="ui segment" style="display: none">
+        <div v-if="isAuthor" id="editvideosegment" class="ui segment" >
           <div
             class="ui bottom attached tab segment active"
             data-tab="first"
@@ -75,7 +75,7 @@
               <form class="ui form uploadform">
                 <div class="field">
                   <label>题目</label>
-                  <input id="uploadTitle" type="text" name="title" placeholder="题目" />
+                  <input id="uploadTitle" type="text" name="title"  placeholder="题目" />
                 </div>
                 <div class="field">
                   <label>视屏详情</label>
@@ -90,7 +90,7 @@
             type="button"
             style="float:right; margin-bottom: 10px"
           >
-            <div style="display:inline-block; padding: 0.8em 1em;">编辑</div>
+            <div style="display:inline-block; padding: 0.8em 1em;" v-on:click="save">保存修改</div>
             <i class="checkmark icon red" style="background: white;opacity: 1;"></i>
             <i
               class="icon white loading spinner dsp-non"
@@ -171,13 +171,9 @@ import play from "../../components/video/player";
 import buttontransfersmall from "../../components/buttontransfersmall";
 import comments from "./comments/comments";
 import verticalvideoband from "../../components/video/verticalvideoband";
+import WEB3Util from '../../../api/eth/web3'
 import "../../../util/Util";
 export default {
-  data() {
-    return {
-      isAuthor: false
-    };
-  },
   computed: {
     userImg: function() {
       return {
@@ -218,16 +214,40 @@ export default {
     },
     isLogin: function() {
       console.log(Session.get("isLogin"));
-      return !(Session.get("isLogin") && Session.get("isLogin").exist
+        var user = JSON.parse(localStorage.getItem("isLogin").toString());
+        user = user.user
+        console.log(user)
+      return !(user && user.exist
         ? true
         : false);
+    },
+    isAuthor:function() {
+      var user = JSON.parse(localStorage.getItem("isLogin").toString());
+      user = user.user
+      console.log(user)
+      console.log(this.authorInfo.publicKey == user.publicKey)
+      if (!user) {  
+        return false;
+      }
+      if (this.authorInfo.publicKey == user.publicKey) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   methods: {
-    toChannel:function() {
-        this.$router.push('/c/'+this.authorInfo.account);
-    },
     subscript: function() {},
+    save:function() {
+        var title =  $('input[name="title"]').val();
+        var description = $('input[name="description"]').val();
+        if (!(title.length > 0 && description.length > 0)) {
+          return ;
+        } 
+
+        WEB3Util.updateResource(_sId, _ipfs, [], _cover, _title,callback);
+
+    },
     transfer:function() {
       console.log("transfer")
       $('.transferdtc').show();

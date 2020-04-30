@@ -14,13 +14,13 @@ class WEB3Util {
 
     // static addressPre = "0x"
 
-    static web3 = typeof web3 != "undefined" ? web3 = new Web3(web3.currentProvider) :  new Web3(
+    static web3 = typeof web3 != "undefined" ? web3 = new Web3(web3.currentProvider) : new Web3(
         new Web3.providers.HttpProvider(Config.eth.address)
     );
 
-    static createVideo(address,videoHash,thubanail,pictureHash,title,callback) {
+    static createVideo(address, videoHash, thubanail, pictureHash, title, callback) {
         const web3 = this.web3;
-        const AuthorModuleAddr =  conAdd.contracts["AuthorModule"];
+        const AuthorModuleAddr = conAdd.contracts["AuthorModule"];
         console.log(address);
         console.log(AuthorModule);
         var AuthorModuleCon = new web3.eth.Contract(
@@ -39,29 +39,29 @@ class WEB3Util {
         //         callback(error,res);
         //     });
 
-            AuthorModuleCon.methods
+        AuthorModuleCon.methods
             .publish(videoHash, thubanail, pictureHash, title)
-            .send({ gas: 20000000000,from: address })
-            .on('receipt', function(receipt){
+            .send({ gas: 20000000000, from: address })
+            .on('receipt', function (receipt) {
                 console.log(receipt);
                 var resId = receipt.events.LogNewResourceResID.returnValues.resDb_
-                callback(null,{receipt,resId})
+                callback(null, { receipt, resId })
             })
-            .on("error",function(error,receipt) {
-                callback(error,receipt);
+            .on("error", function (error, receipt) {
+                callback(error, receipt);
             })
     }
 
 
-    static changeResourceWaive(address,waive,callback) {
+    static changeResourceWaive(address, _resid, waive, callback) {
         if (typeof web3 != "undefined") {
             web3 = new Web3(web3.currentProvider);
         } else {
-            web3 = new Web3(
+            var web3 = new Web3(
                 new Web3.providers.HttpProvider(Meteor.settings.eth.address)
             );
         }
-        const AuthorModuleAddr =  conAdd.contracts["AuthorModule"];
+        const AuthorModuleAddr = conAdd.contracts["AuthorModule"];
         console.log(address);
         console.log(AuthorModule);
         var AuthorModuleCon = new web3.eth.Contract(
@@ -73,33 +73,36 @@ class WEB3Util {
         );
         console.log(AuthorModuleCon);
         AuthorModuleCon.methods
-            .changeResourceWaive(_resid,waive)
-            .send({ gas: 20000000000 }, function (error, res) {
-                console.log(error);
-                console.log(res);
-                callback(error,res);
-            });
+            .changeResourceWaive(_resid, waive)
+            .send({ gas: 20000000000 })
+            .on('receipt', function (receipt) {
+                console.log(receipt);
+                callback(null, receipt)
+            })
+            .on("error", function (error, receipt) {
+                callback(error, receipt);
+            })
     }
 
 
-    static getBalance(address,callback) {
-        this.web3.eth.getBalance(address,callback)
+    static getBalance(address, callback) {
+        this.web3.eth.getBalance(address, callback)
     }
 
-    static toWei(number,unit) {
-        return this.web3.utils.toWei(number,unit)
-    } 
+    static toWei(number, unit) {
+        return this.web3.utils.toWei(number, unit)
+    }
 
-    static transfor(from,to,value) {
+    static transfor(from, to, value) {
         return this.web3.eth.sendTransaction({
-            from:from,
-            to:to,
-            value:value
+            from: from,
+            to: to,
+            value: value
         })
     }
 
-    static buy(from,value,_resid,callback) {
-        const UserModuleAddr =  conAdd.contracts["UserModule"]; 
+    static buy(from, value, _resid, callback) {
+        const UserModuleAddr = conAdd.contracts["UserModule"];
         console.log(value)
         const web3 = this.web3;
         console.log(from);
@@ -113,12 +116,12 @@ class WEB3Util {
         );
         console.log(UserModuleCon);
         UserModuleCon.methods
-        .buy(_resid,value)
-        .send({ gas: 2000000, from: from,  value: value }, function (error, res) {
-            console.log(error);
-            console.log(res);
-            callback(error,res);
-        });
+            .buy(_resid, value)
+            .send({ gas: 2000000, from: from, value: value }, function (error, res) {
+                console.log(error);
+                console.log(res);
+                callback(error, res);
+            });
     }
 
     static hexToBytes(hax) {
@@ -126,9 +129,9 @@ class WEB3Util {
     }
 
 
-    static findResourceInfo(from,resId,callback) {
-        const AuthorModuleAddr =  conAdd.contracts["AuthorModule"];
-      
+    static findResourceInfo(from, resId, callback) {
+        const AuthorModuleAddr = conAdd.contracts["AuthorModule"];
+
         console.log(AuthorModule);
         var AuthorModuleCon = new web3.eth.Contract(
             AuthorModule.abi,
@@ -143,13 +146,13 @@ class WEB3Util {
             .call({ gas: 20000000000 }, function (error, res) {
                 console.log(error);
                 console.log(res);
-                callback(error,res);
+                callback(error, res);
             });
     }
 
 
-    static findOrderIdByUser(from,callback) {
-        const UserModuleAddr =  conAdd.contracts["UserModule"];
+    static findOrderIdByUser(from, callback) {
+        const UserModuleAddr = conAdd.contracts["UserModule"];
         console.log(from)
         console.log(UserModule);
         var UserModuleCon = new web3.eth.Contract(
@@ -159,16 +162,16 @@ class WEB3Util {
         // console.log(UserModuleCon);
         UserModuleCon.methods
             .myOrders()
-            .call({from:from},function(error,res) {
-                callback(error,res)
+            .call({ from: from }, function (error, res) {
+                callback(error, res)
             })
-        
-    }
-    
 
-    static mangeDestWhite(from,_contract, _target,_allow,callback) {
-        const AdminModuleAddr =  conAdd.contracts["AdminModule"];
-      
+    }
+
+
+    static mangeDestWhite(from, _contract, _target, _allow, callback) {
+        const AdminModuleAddr = conAdd.contracts["AdminModule"];
+
         // if (typeof web3 != "undefined") {
         //     web3 = new Web3(web3.currentProvider);
         // } else {
@@ -188,41 +191,43 @@ class WEB3Util {
         );
         console.log(AdminModuleCon);
         AdminModuleCon.methods
-            .mangeDestWhite(_contract,_target,_allow)
+            .mangeDestWhite(_contract, _target, _allow)
             .send({ gas: 20000000000 })
-            .on('receipt', function(receipt){
+            .on('receipt', function (receipt) {
                 console.log(receipt);
                 var success = receipt.events.LogWhileChangedSuccess.returnValues.success
-                callback(null,success)
+                callback(null, success)
             })
-            .on("error",function(error,receipt) {
-                callback(error,false);
+            .on("error", function (error, receipt) {
+                callback(error, false);
             })
     }
 
+    static updateResource(
+        _sId, _ipfs, _thubanail, _cover, _title,callback
+    ) {
+        const AuthorModuleAddr = conAdd.contracts["AuthorModule"];
 
-    // static insertResource(_sid,address,videoHash,thubanail,pictureHash,title,callback) {
-    //     const web3 = this.web3;
-    //     const ResourceDBAddr =  conAdd.contracts["ResourceDB"];
-    //     console.log(address);
-    //     console.log(ResourceDB);
-    //     var ResourceDBCon = new web3.eth.Contract(
-    //         ResourceDB.abi,
-    //         ResourceDBAddr,
-    //         {
-    //             from: address,
-                
-    //         }
-    //     );
-    //     console.log(ResourceDBCon);
-    //     ResourceDBCon.methods
-    //         .insertResource(_sid,videoHash, address,thubanail, pictureHash, title)
-    //         .call({ gas: 20000000000,from: address,gasPrice:"20" }, function (error, res) {
-    //             console.log(error);
-    //             console.log(res);
-    //             callback(error,res);
-    //         });
-    // }
+        console.log(AuthorModule);
+        var AuthorModuleCon = new web3.eth.Contract(
+            AuthorModule.abi,
+            AuthorModuleAddr,
+            {
+                from: from
+            }
+        );
+        console.log(AuthorModuleCon);
+        AuthorModuleCon.methods
+            .updateResource(_sId, _ipfs, _thubanail, _cover, _title)
+            .send({ gas: 20000000000 })
+            .on('receipt', function (receipt) {
+                console.log(receipt);
+                callback(null, receipt)
+            })
+            .on("error", function (error, receipt) {
+                callback(error, receipt);
+            });
+    }
 
 }
 

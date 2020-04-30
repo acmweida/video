@@ -82,7 +82,7 @@ export default {
       var userinfo = Session.get("isLogin");
       if (userinfo.exist) {
         // console.log("sss")
-        this.$router.replace("/");
+        this.$router.replace("/user/");
       }
     },
     login: function() {
@@ -204,6 +204,7 @@ export default {
               }
             };
             Session.set("isLogin",user);
+            localStorage.setItem("isLogin",JSON.stringify(res));
             let address = EthUtil.pubToAddress(publicKey).toString("hex");
             Session.set("user.address", address);
               $("#white").click();

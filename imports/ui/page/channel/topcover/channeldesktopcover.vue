@@ -54,7 +54,8 @@
 import buttontransfer from "../../../components/button/buttontransfer";
 import buttonunsubscribe from "../../../components/button/buttonunsubscribe";
 import buttonsubscribe from "../../../components/button/buttonsubscribe";
-import { User,Sub } from "../../../collections/collection";
+import {User} from "../../../collections/collection";
+import {Sub} from "../../../collections/collection"
 export default {
   props: {
     author: Object
@@ -67,9 +68,10 @@ export default {
   },
   data() {
     return {
-         user:null,
-      authorinfo:this.author,
-      subinfo:null,
+      user: null,
+      authorinfo: this.author,
+      subinfo: null,
+      userSub:null,
       isSubscribedTo:false,
       authorImg: {
         "background-size": "cover",
@@ -94,31 +96,33 @@ export default {
     buttontransfer
   },
   created() {
-         this.authorinfo = this.author;
-        var user = Session.get("isLogin");
-        console.log(user)
-        this.user = user;
-        if (user) {
-           var userSub = Sub.findOne({userid:this.user.publicKey});
-           this.userSub = userSub;
-        }
-        this.isSubscribedTo = !this.user || !this.userSub || (this.userSub && this.userSub.subs.indexOf(this.authorinfo.publicKey) == -1) ? false : true;
+    console.log(this.$subReady.sub)
+    this.authorinfo = this.author;
+    var user = Session.get("isLogin");
+    var user = JSON.parse(localStorage.getItem("isLogin").toString());
+    console.log(user.user.publicKey);
+    this.user = user.user;
+    // console.log(this.user.publicKey == "a57754133dddfca0ae6aa86a39e6d6a45202040d0b380dec76cfb93afe28c90967a64cb76d92d7d4f08725d13b48a9e7aae3551d90598ffb36dbd7f03264a627")
+    if (user.user) {
+      console.log(this.user.publicKey)
+      publicKey = this.user.publicKey
+      var userSub =  Sub.findOne({ userid:this.user.publicKey });
+      // console.log(Sub.find({}).fetch())
+      // console.log(User.find({publicKey:this.user.publicKey}).fetch())
+      console.log(userSub);
+      this.userSub = userSub;
+      
+    }
+
+    this.isSubscribedTo =
+      !this.user ||
+      !this.userSub ||
+      (this.userSub &&
+        this.userSub.subs.indexOf(this.authorinfo.publicKey) == -1)
+        ? false
+        : true;
   },
   computed: {
-    // isSubscribedTo: function() {
-    //   // if (!this.user) {
-    //   //   return false;
-    //   // }
-    //   // // console.log(this.userSub)
-    //   // if (!this.userSub ) {
-    //   //   return false;
-    //   // }
-    //   // // console.log(this.userSub.subs.indexOf(this.author.publicKey));
-    //   // if (this.userSub && this.userSub && this.userSub.subs.indexOf(this.authorinfo.publicKey) == -1) {
-    //   //  return false;
-    //   // } 
-    //   return 
-    // },
     cover_image: function() {
       // console.log(this.author.cover_image)
       if (!this.authorinfo.cover_image) return this.randomBackgroundColor();
@@ -129,7 +133,7 @@ export default {
       // var user = Session.get("isLogin");
       // console.log(this.author);
       // var res = {};
-      return this.user && this.user.user.publicKey == this.authorinfo.publicKey;
+      return this.user && this.user.publicKey == this.authorinfo.publicKey;
     }
   },
   methods: {
@@ -155,34 +159,49 @@ export default {
       return bgcolor;
     },
     cancelSub: function() {
-      console.log("xxxx");
+      // console.log("xxxx");
       // console.log(user);
       if (!this.user) {
-        this.$router.replace("/login");
+        this.$router.replace("/user/login");
       }
+
       // var subinfo = Sub.findOne({userid:user.publicKey});
-      Sub.update({_id:this.userSub._id},{$pull:{subs:this.authorinfo.publicKey}});
-      User.update({_id:this.authorinfo._id},{$inc:{follow:-1}})
-      this.authorinfo = User.findOne({_id:this.authorinfo._id});
+      Sub.update(
+        { _id: this.userSub._id },
+        { $pull: { subs: this.authorinfo.publicKey } }
+      );
+      User.update({ _id: this.authorinfo._id }, { $inc: { follow: -1 } });
+      this.authorinfo = User.findOne({ _id: this.authorinfo._id });
       this.isSubscribedTo = !this.isSubscribedTo;
     },
     addSub: function() {
-      console.log("xxxx");
+      // console.log("xxxx");
       // console.log(user);
-  
+
       if (!this.user) {
-        this.$router.replace("/login");
-        return ;
+        this.$router.replace("/user/login");
+        return;
       }
+
     
       if (this.userSub) {
-        Sub.update({_id:this.userSub._id},{ $push: { subs: this.authorinfo.publicKey }});
+        Sub.update(
+          { _id: this.userSub._id },
+          { $push: { subs: this.authorinfo.publicKey } }
+        );
       } else {
-        Sub.insert({userid:this.user.publicKey,subs:[this.authorinfo.publicKey]});
+        // console.log(this.user.publicKey);
+        Sub.insert({
+          userid: this.user.publicKey,
+          subs: [this.authorinfo.publicKey]
+        });
       }
-        User.update({_id:this.authorinfo._id},{$inc:{follow:1}})
-        this.authorinfo = User.findOne({_id:this.authorinfo._id});
-        this.isSubscribedTo = !this.isSubscribedTo;
+      User.update({ _id: this.authorinfo._id }, { $inc: { follow: 1 } });
+      this.authorinfo = User.findOne({ _id: this.authorinfo._id });
+      this.isSubscribedTo = !this.isSubscribedTo;
+      var userSub = Sub.findOne({ userid: this.user.publicKey });
+       console.log(userSub);
+      this.userSub = userSub;
     }
   }
 };

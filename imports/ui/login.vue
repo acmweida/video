@@ -64,7 +64,7 @@ export default {
     route: function() {
       var userinfo = Session.get("isLogin");
       if (userinfo && userinfo.exist) {
-        this.$router.replace("/");
+        this.$router.replace("/user/");
       }
     },
     login: function() {
@@ -102,12 +102,12 @@ export default {
               if (res.exist) {
                 // console.log(this.loginSess);
                 Session.set("isLogin", res);
-                // localStorage.set("isLogin",res);
+                localStorage.setItem("isLogin",JSON.stringify(res));
                 // console.log("ssss");
                 let address = EthUtil.pubToAddress(publicKey).toString("hex");
-                console.log(address);
+                // console.log(address);
                 Session.set("user.address", address);
-               console.log(Session.get("isLogin"));
+              //  console.log(Session.get("isLogin"));
               
                 $("#route").click();
               } else {

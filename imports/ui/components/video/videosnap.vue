@@ -1,6 +1,6 @@
 <template name='videosnap'>
   <div class="videosnap wid-ful" style="max-width:248px;">
-    <a v-bind:title="title" v-on:click="player">
+    <a v-bind:title="title" :href="'/video/'+video.ipfs" target="_blank">
       <div id="snaphover" class="videosnapsnap wid-ful" style="height:118px;">
         <div class="pos-abs wid-ful" style="z-index:1; height:118px;">
           <span class="videoscore">
@@ -45,13 +45,13 @@
     </a>
     <div class="boxdisplayer">
       <div class="videosnaptitle">
-        <a  v-on:click="player">
+        <a :href="/video/+video.ipfs" target="_blank">
           <span class="customtitlelink" style="margin-top: 10px;">{{title}}</span>
         </a>
       </div>
     </div>
     <div class="videosnapauthor">
-      <a v-on:click="player">
+      <a target="_blank" :href="/c/+username">
         <span class="customlink">{{username}}</span>
       </a>
     </div>
@@ -60,24 +60,40 @@
       <div class="videosnaptime">{{date}}</div>
     </div>
     <div v-if="isAuthor">
-    <div v-if="!video.waive" class="ui right labeled icon button green transferdtcbtn  pos-rel" style="margin-top: 5px;">
-      <div style="display:inline-block;padding: 0.2em;">{{ translate('VIDEO_UP')}}</div>
+      <div
+        v-if="!video.waive"
+        v-on:click="upVideo"
+        class="ui right labeled icon button green transferdtcbtn pos-rel"
+        style="margin-top: 5px;"
+      >
+        <div style="display:inline-block;padding: 0.2em;">{{ translate('VIDEO_UP')}}</div>
+      </div>
+      <div
+        v-else
+        v-on:click="downVideo"
+        class="ui right labeled icon button red transferdtcbtn pos-rel"
+        style="margin-top: 5px;"
+      >
+        <div style="display:inline-block;padding: 0.2em;">{{ translate('VIDEO_DOWN')}}</div>
+      </div>
+      <div
+        class="ui right labeled icon button grey transferdtcbtn pos-rel"
+        style="margin-top: 5px;"
+      >
+        <div style="display:inline-block;padding: 0.2em;">{{ translate('VIDEO_EDIT')}}</div>
+      </div>
     </div>
-    <div v-else class="ui right labeled icon button red transferdtcbtn  pos-rel" style="margin-top: 5px;">
-      <div style="display:inline-block;padding: 0.2em;">{{ translate('VIDEO_DOWN')}}</div>
-    </div>
-    <div  class="ui right labeled icon button grey transferdtcbtn  pos-rel" style="margin-top: 5px;">
-      <div style="display:inline-block;padding: 0.2em;">{{ translate('VIDEO_EDIT')}}</div>
-    </div>
-    </div>
+    <div id="changWaive" v-on:click="changeWaive" ></div>
   </div>
 </template>
 
 <script>
+import WEB3Util from "../../../api/eth/web3";
+import { Video} from '../../collections/collection'
 export default {
   props: {
     video: Object,
-    isAuthor:Boolean
+    isAuthor: Boolean
   },
   data() {
     return {
@@ -85,12 +101,15 @@ export default {
       imgUrl: Meteor.settings.IPFS.file_base_url + this.video.cover,
       title: this.video.title,
       author: this.video.author,
-      userUrl: "/user/" + this.video.author,
+      userUrl: "/c/" + this.video.author,
       gratuityNum: numForm(this.video.gratuityNum),
       date: this.dateFrom(new Date(this.video.createDate))
     };
   },
   meteor: {
+    $subscribe: {
+      video: []
+    },
     username() {
       var username = Session.get("username" + this.video.author);
       Session.set(this.video.ipfs, this.video);
@@ -101,7 +120,6 @@ export default {
     },
     getUserName() {
       var author = this.video.author;
-
       Meteor.call(
         "user.getUserName",
         {
@@ -118,8 +136,39 @@ export default {
     }
   },
   methods: {
-    player() {
-      this.$router.replace("/video/" + this.video.ipfs);
+    upVideo: function() {
+      let address = Session.get("user.address");
+      let _resid = this.video.resid;
+      let waive = true;
+      cb = function(err, res) {
+        console.log(err);
+        console.log(res);
+         if (res) {
+            Session.set("waive",waive);
+           $('#changWaive').click();
+        }
+      };
+      WEB3Util.changeResourceWaive(address, _resid, waive, cb);
+    },
+    downVideo: function() {
+      let address = Session.get("user.address");
+      let _resid = this.video.resid;
+      console.log(_resid)
+      let waive = false;
+      cb = function(err, res) {
+        console.log(err);
+        console.log(res);
+        if (res) {
+          Session.set("waive",waive);
+         $('#changWaive').click();
+        }
+      };
+      WEB3Util.changeResourceWaive(address, _resid, waive, cb);
+    },
+    changeWaive() {
+      let waive = Session.get("waive");
+        console.log(waive)
+        Video.update({_id:this.video._id},{$set:{waive:waive}});
     }
   }
 };

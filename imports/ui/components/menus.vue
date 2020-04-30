@@ -2,7 +2,7 @@
   <div class="right floated menu">
     <div class="ui item top right floated dropdown dropdownnotification" tabindex="0">
       <!-- <i id="notification" class="alarm icon" style="font-size:1.3em; margin:0;"></i> -->
-      <router-link :to="{ name: 'home' }" exact>
+      <router-link :to="{ name: 'home2' }" exact>
         <h4 class="dtubesidebartitle trendingtitle" style="font-size:1.3em; margin:0;">主页</h4>
       </router-link>
     </div>

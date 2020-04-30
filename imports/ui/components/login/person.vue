@@ -295,11 +295,11 @@ export default {
   methods:{
     toChannel() {
       var user = Session.get("isLogin");
-      this.$router.push("/c/"+user.user.account);
+      this.$router.push("/user/c/"+user.user.account);
     },
     toActive() {
        var user = Session.get("isLogin");
-       this.$router.push("/a/"+user.user.account);
+       this.$router.push("/user/a/"+user.user.account);
     }
   }
 };
