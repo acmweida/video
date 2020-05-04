@@ -1,15 +1,14 @@
 <template>
   <main class="ui maingrid content">
-    
+    <div class="top-banner"></div>
     <div class="ui container">
-      <div class="top-banner"></div>
       <div
         v-if="hotVideos"
-        class="ui left aligned grid"
+        class="ui left aligned grid show"
         style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;"
       >
         <div
-          class="left floated left aligned ten wide column block-header"
+          class="left floated  aligned ten wide column block-header all "
           style="padding-left:0px;"
         >
           <h2>
@@ -29,11 +28,11 @@
       <div class="ui divider"></div>
       <div
         v-if="trendingVideos"
-        class="ui left aligned grid"
+        class="ui left aligned grid show"
         style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;"
       >
         <div
-          class="left floated left aligned ten wide column block-header"
+          class="left floated  aligned ten wide column block-header all"
           style="padding-left:0px;"
         >
           <h2>
@@ -53,11 +52,11 @@
       <div class="ui divider"></div>
       <div
         v-if="newVideos"
-        class="ui left aligned grid"
+        class="ui left aligned grid show"
         style="margin-bottom:0rem;margin-left:0rem;margin-right:0rem;"
       >
         <div
-          class="left floated left aligned ten wide column block-header"
+          class="left floated  aligned ten wide column block-header all"
           style="padding-left:0px;"
         >
           <h2>
@@ -68,7 +67,7 @@
           class="floated right aligned two wide column"
           style="padding-right:0px;margin-top: 8px;"
         >
-          <a href="/newvideos" style="color:#666666">
+          <a href="/newvideos" style="color:#666666" >
             <h5>{{ translate("HOME_SHOW_ALL")}}</h5>
           </a>
         </div>
@@ -102,6 +101,15 @@ export default {
 .top-banner {
   background-color: white;
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
 }
+
+.show {
+  max-height: 60px;
+}
+
+.all {
+  margin-top: 0px;
+}
+
 </style>

@@ -10,8 +10,8 @@ import VideoPlay from '../imports/ui/page/video/videoplay'
 import Channel from '../imports/ui/page/channel/channel'
 import Activit from '../imports/ui/page/activit/activit'
 import Admin from '../imports/ui/admin/home'
-import AdminLogin from "../imports/ui/admin/page/login/"
-import AdminMain from "../imports/ui/admin/page/layout/"
+import AdminLogin from "../imports/ui/admin/page/login"
+import AdminMain from "../imports/ui/admin/page/main"
 export default [
   {
     path: '/user', name: 'home', component: Home,
@@ -28,7 +28,7 @@ export default [
   {
     path: '/admin', name: 'admin', component: Admin,
     children: [
-      { path: '', name: 'adminlogin', component: AdminLogin },
+      { path: '',hidden:true, name: 'adminlogin', component: AdminLogin },
       { path: "main", name: 'main', component: AdminMain }
     ]
   },

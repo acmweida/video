@@ -2,13 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from 'vue-router'
 import VueMeteorTracker from 'vue-meteor-tracker';
-import SuiVue from 'semantic-ui-vue';
-import 'semantic-ui-css/semantic.min.css';
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(VueMeteorTracker);
-Vue.use(SuiVue);
-Vue.use(ElementUI)
+
 Vue.use(VueRouter);
 import './main.html';
 import '../imports/startup/client/start.js'
@@ -17,6 +12,7 @@ import routes from './routes'
 import '../imports/util/Util'
 import Video from 'video.js'
 import 'video.js/dist/video-js.css'
+import 'animate.css'
 Vue.prototype.$video = Video
 
 Meteor.startup(() => {

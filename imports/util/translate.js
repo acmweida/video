@@ -222,7 +222,8 @@ var codeToInfo = {
     "TRANSFOR_LOG":"打赏记录",
     "NO_TRANSFOR":"没有交易记录",
     "ACCEPT_LOG": "收入记录",
-    "LOGIN_ERROR":"用户名或这密码错误"
+    "LOGIN_ERROR":"用户名或这密码错误",
+    "LOGIN_LENGTH_ERROR":"用户名或密码长度为零"
 }
 
 translate = function(code) {
