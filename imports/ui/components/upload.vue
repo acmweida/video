@@ -13,7 +13,8 @@
 export default {
   methods: {
     change: function() {
-      var userinfo = Session.get("isLogin");
+      // var userinfo = Session.get("isLogin");
+        var userinfo = JSON.parse(localStorage.getItem("isLogin").toString());
       if (userinfo && userinfo.exist === true)
         this.$router.replace("/user/upload");
       else this.$router.replace("/user/login");

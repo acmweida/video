@@ -14,7 +14,7 @@ export const videoCreate = {
     },
     run({ publicKey, ipfs, resid, title, cover, description, kind }) {
         // console.log(publicKey)s
-        var videoid = Video.insert({ author: publicKey, ipfs: ipfs, resid: resid, title: title, cover: cover, waive: true, gratuityNum: 0, description: description, kind: kind, thumbsup: 0,createDate:new Date() });
+        var videoid = Video.insert({ author: publicKey, ipfs: ipfs, resid: resid, title: title, cover: cover, waive: true, gratuityNum: 0, description: description, kind: kind, thumbsup: 0,createDate:new Date(),check:0,isdelete:false });
         if (videoid) {
             User.update({ publicKey: publicKey }, { $push: { videos: videoid } });
             return true;

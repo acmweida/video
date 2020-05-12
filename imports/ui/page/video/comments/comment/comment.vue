@@ -1,26 +1,18 @@
 <template>
-  <div class="title comment" style="text-align:left; padding-bottom: 1em;">
-    <div class="ui comment" style="max-width: 9999px;">
-      <a
-        class="ui mini circular avatar image"
-        style="margin-right:10px; width:48px; height:48px;"
-      >
-        <div
-          style="background-size: cover; min-width:48px; width:48px; height: 48px; background-image:url(https://steemitimages.com/u/hafizullah/avatar/)"
-        ></div>
+  <div class="ui threaded comments">
+    <div class="comment">
+      <a class="avatar">
+        <img v-bind:src=" getImgUrl(userinfo)" />
       </a>
-
-      <a href="https://d.tube/c/hafizullah" class="ui author">hafizullah</a>
-
-      <div class="metadata">
-        <a class="date" href="https://d.tube/v/hafizullah/q2pjrg">4 个月前</a>
-        <span class="money">$0</span>
-      </div>
-      <div
-        class="text"
-        style="word-wrap: normal; flex-wrap: wrap; overflow: hidden; margin-top: 10px;"
-      >
-        <a href="https://d.tube/c/tipu" target="_blank" rel="noopener noreferrer">@tipu</a> curate
+      <div class="content">
+        <a class="author">{{userinfo.account}}</a>
+        <div class="metadata">
+          <span class="date">{{ dateFrom(comment.createDate) }}</span>
+        </div>
+        <div class="text">{{comment.comment}}</div>
+        <div class="actions">
+          <a class="reply">回复</a>
+        </div>
       </div>
     </div>
   </div>
@@ -28,7 +20,24 @@
 
 
 <script>
+import { User } from "../../../../collections/collection";
+
 export default {
-  
-}
+  props: {
+    comment: Object
+  },
+  meteor: {
+    $subscribe: {
+      user: []
+    }
+  },
+  computed: {
+    userinfo: function() {
+      return User.findOne({ _id: this.comment.userid });
+    }
+    // img:function() {
+    //   getImgUrl(userinfo)
+    // }
+  }
+};
 </script>

@@ -11,7 +11,13 @@ import Channel from '../imports/ui/page/channel/channel'
 import Activit from '../imports/ui/page/activit/activit'
 import Admin from '../imports/ui/admin/home'
 import AdminLogin from "../imports/ui/admin/page/login"
-import AdminMain from "../imports/ui/admin/page/main"
+import AdminMain from "../imports/ui/admin/page/layout"
+import Main from '../imports/ui/admin/page/main'
+import PersonManger from '../imports/ui/admin/page/person'
+import VideoManger from '../imports/ui/admin/page/video'
+import commitManger from '../imports/ui/admin/page/video'
+import myNabger from '../imports/ui/admin/page/my'
+import permissionManger from '../imports/ui/admin/page/permission'
 export default [
   {
     path: '/user', name: 'home', component: Home,
@@ -28,8 +34,19 @@ export default [
   {
     path: '/admin', name: 'admin', component: Admin,
     children: [
-      { path: '',hidden:true, name: 'adminlogin', component: AdminLogin },
-      { path: "main", name: 'main', component: AdminMain }
+      { path: 'login', hidden: true, name: 'adminlogin', component: AdminLogin },
+      {
+        path: "main", name: 'main', component: AdminMain,
+        children: [
+          { path: '', name: 'content', component: Main },
+          { path: 'person', name: 'mangperson', component: PersonManger },
+          { path: 'video', name: 'mangvideo', component: VideoManger },
+          { path: 'commit', name: 'mangcommit', component: commitManger },
+          { path: 'my', name: 'mangmy', component: myNabger },
+          { path: 'permission', name: 'mangvideo', component: permissionManger }
+        ]
+      },
+
     ]
   },
   { path: '*', name: 'not-found', component: NotFound }

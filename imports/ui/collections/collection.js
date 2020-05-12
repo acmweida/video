@@ -4,6 +4,7 @@ export const Order = new Mongo.Collection('ORDER');
 export const VideoCreateLog  = new Mongo.Collection("VIDEOCREATELOG");
 export const Sub = new Mongo.Collection('SUB');
 export const Admin = new Mongo.Collection('ADMIN');
+export const Comment = new Mongo.Collection("COMMENT");
 
 Tracker.autorun(() => {
     // Meteor.subscribe('chat', { room: Session.get('currentRoom') });
@@ -13,4 +14,5 @@ Tracker.autorun(() => {
     Meteor.subscribe('order');
     Meteor.subscribe('videolog');
     Meteor.subscribe('admin');
+    Meteor.subscribe('comment');
   });

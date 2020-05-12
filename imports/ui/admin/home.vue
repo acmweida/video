@@ -5,9 +5,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import iView from 'meteor/efrancis:iview';
-Vue.use(iView);
 export default {
     
 }

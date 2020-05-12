@@ -1,44 +1,47 @@
 <template>
-  <main class="ui maingrid content">
-    <div class="ui container">
-      <div class="ui left">
-        <!-- <img
+  <div>
+    <div class="top-banner"></div>
+    <main class="ui maingrid content">
+      <div class="ui container">
+        <div class="ui left">
+          <!-- <img
       v-bind:src="userImg"
       class="pos-abs"
       style="object-fit: cover;width: 100%;height: 100%;"
-        />-->
-        <div class="ui container">
-          <div
-            class="pos-abs"
-            style="margin-left:160px;;top:20%;z-index:10;color:white;text-shadow: 2px 2px 2px #262626;"
-          >
-            <h1>{{user.account}}</h1>
-            <i class="icon red play"></i>
-            <strong>{{ user.gratuityNum ? user.gratuityNum : 0 }} ETH</strong>
-            <br />
-            <div style="margin-top:15px">
-              <strong>
-                <span style="color:red;">订阅</span>
-                ：{{user.follow ? user.follow : 0 }}
-              </strong>
+          />-->
+          <div class="ui container">
+            <div
+              class="pos-abs"
+              style="margin-left:160px;z-index:10;color:white;text-shadow: 2px 2px 2px #262626;"
+            >
+              <h1>{{user.account}}</h1>
+              <i class="icon red play"></i>
+              <strong>{{ user.gratuityNum ? user.gratuityNum : 0 }} ETH</strong>
+              <br />
+              <div style="margin-top:15px">
+                <strong>
+                  <span style="color:red;">订阅</span>
+                  ：{{user.follow ? user.follow : 0 }}
+                </strong>
+              </div>
             </div>
+            <img
+              id="snapimg"
+              class="sprite owl-lazy img"
+              v-bind:src="userImg"
+              width="90px"
+              height="90px"
+              style="max-height:200px;"
+              alt
+            />
           </div>
-          <img
-            id="snapimg"
-            class="sprite owl-lazy img"
-            v-bind:src="userImg"
-            width="90px"
-            height="90px"
-            style="max-height:200px;"
-            alt
-          />
+        </div>
+        <div style="display: grid;">
+          <Videosnapactivit v-for="video in videos" v-bind:key="video._id" v-bind:video="video"></Videosnapactivit>
         </div>
       </div>
-      <div style="display: grid;">
-        <Videosnapactivit v-for="video in videos" v-bind:key="video._id" v-bind:video="video"></Videosnapactivit>
-      </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -63,7 +66,10 @@ export default {
       if (!subs) {
         return;
       }
-      var videos = Video.find({ author: { $in: subs.subs } },{$sort:{createDate:-1}}).fetch();
+      var videos = Video.find(
+        { author: { $in: subs.subs } },
+        { $sort: { createDate: -1 } }
+      ).fetch();
       // console.log(subs);
       // console.log(videos);
       return videos;

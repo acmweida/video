@@ -13,7 +13,7 @@
         </a>
       </div>
       <div class="video">
-        <a v-bind:title="title" :href="/video/+video.ipfs" target="_blank">
+        <a v-bind:title="title" :href="'/user/video/'+video.ipfs" target="_blank">
           <div id="snaphover" class="videosnapsnap wid-ful" style="height:200px;">
             <div class="pos-abs wid-ful" style="z-index:1; height:118px;">
 
@@ -57,7 +57,7 @@
         </a>
         <div class="boxdisplayer">
           <div class="videosnaptitle">
-            <a :href="/video/+video.ipfs" target="_blank">
+            <a :href="'/user/video/'+video.ipfs" target="_blank">
               <span class="customtitlelink" style="margin-top: 10px;font-size:12px;font-weight:bold;">{{title}}</span>
             </a>
           </div>

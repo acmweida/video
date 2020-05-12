@@ -10,7 +10,7 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" v-model="username" placeholder="username" />
+              <input type="text" v-model="username" placeholder="Username" />
             </div>
           </div>
           <div class="field">
@@ -63,7 +63,7 @@ export default {
 };
 </script>
 
-<style type="text/css">
+<style type="text/css" scoped>
 body > .grid {
   height: 100%;
 }

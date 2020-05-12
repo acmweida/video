@@ -58,7 +58,7 @@ export default {
     }
   },
   created() {
-    var user = Session.get("isLogin");
+    var user = isLoginU();
     console.log(user);  
     var address = "0x"+ user.user.publicKey
     console.log(address)

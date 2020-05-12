@@ -1,6 +1,6 @@
 <template>
   <div class="videosnap wid-ful" style="max-width:248px;">
-    <a v-bind:title="title"  :href="/video/+video.ipfs" target="_blank">
+    <a v-bind:title="title"  :href="'/user/video/'+video.ipfs" target="_blank">
       <div id="snaphover" class="videosnapsnap wid-ful" style="height:118px;">
         <div class="pos-abs wid-ful" style="z-index:1; height:118px;">
           <span class="videoscore">
@@ -45,13 +45,13 @@
     </a>
     <div class="boxdisplayer">
       <div class="videosnaptitle">
-        <a  :href="/video/+video.ipfs" target="_blank">
+        <a  :href="'/user/video/'+video.ipfs" target="_blank">
           <span class="customtitlelink" style="margin-top: 10px;">{{title}}</span>
         </a>
       </div>
     </div>
     <div class="videosnapauthor">
-      <a :href="/c/+username" target="_blank">
+      <a :href="'/user/c/'+username" target="_blank">
         <span class="customlink">{{username}}</span>
       </a>
     </div>

@@ -4,9 +4,10 @@ import {Order} from '../../api/mongo/db'
 import {VideoCreateLog} from '../../api/mongo/db'
 import {Sub} from '../../api/mongo/db'
 import {Admin} from '../../api/mongo/db'
+import {Comment} from '../../api/mongo/db'
 
 Meteor.publish('nawVideos', function () {
-    var res = Video.find({waive:true}, { limit: 25, sort: { createDate: -1 } });
+    var res = Video.find({waive:true,check:1,isdelete:false}, { limit: 25, sort: { createDate: -1 } });
     return res;
 });
 
@@ -15,7 +16,7 @@ Meteor.publish('user', function () {
 });
 
 Meteor.publish('hotVideos', function () {
-    var res = Video.find({waive:true},{ $sample: { size: 25 } });
+    var res = Video.find({waive:true,check:1,isdelete:false},{ $sample: { size: 25 } });
     return res;
 });
 
@@ -25,7 +26,7 @@ Meteor.publish('videoAll', function () {
 });
 
 Meteor.publish('video', function () {
-    var res = Video.find({waive:true});
+    var res = Video.find({waive:true,check:1,isdelete:false});
     return res;
 });
 
@@ -48,5 +49,10 @@ Meteor.publish('sub',function() {
 
 Meteor.publish('admin',function() {
     var res = Admin.find({});
+    return res;
+})
+
+Meteor.publish('comment',function() {
+    var res = Comment.find({is_delete:false});
     return res;
 })

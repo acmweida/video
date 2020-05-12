@@ -16,6 +16,10 @@ export default {
   meteor: {
     loginState() {
       var userinfo = Session.get("isLogin");
+      if (!userinfo) {
+           userinfo = JSON.parse(localStorage.getItem("isLogin").toString());
+      }
+       
       if (userinfo != undefined && userinfo.exist === true) return false;
       else return true;
     }

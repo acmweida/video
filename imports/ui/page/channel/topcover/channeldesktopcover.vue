@@ -80,6 +80,7 @@ export default {
         left: "20px",
         "min-width": "128px",
         width: "128px",
+        "margin-top": "0px",
         height: "128px",
         "background-image":
           "url(" +

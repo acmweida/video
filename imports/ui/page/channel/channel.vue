@@ -1,5 +1,5 @@
 <template >
-  <div style="width: 100%;margin-top: -23px;">
+  <div style="width: 100%;">
     <div class="top-banner"></div>
     <channeldesktopcover v-if="author" v-bind:author="author"></channeldesktopcover>
     <div class="ui container"  style="margin-top:5px">
@@ -191,7 +191,7 @@ export default {
   background: white;
   /* height: 10px; */
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
 }
 </style>
 
