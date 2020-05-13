@@ -16,6 +16,10 @@ import Main from '../imports/ui/admin/page/main'
 import PersonManger from '../imports/ui/admin/page/person'
 import VideoManger from '../imports/ui/admin/page/video'
 import commitManger from '../imports/ui/admin/page/video'
+import NewVideo from '../imports/ui/page/newvideo'
+import TrendingVideo from '../imports/ui/page/trendingVideos'
+import HotVideos from '../imports/ui/page/hotvideo'
+import SearchVideo from '../imports/ui/page/search'
 import myNabger from '../imports/ui/admin/page/my'
 import permissionManger from '../imports/ui/admin/page/permission'
 export default [
@@ -27,6 +31,10 @@ export default [
       { path: 'register', name: 'register', component: Register },
       { path: 'upload', name: 'upload', component: Upload },
       { path: 'video/:id', name: 'videoplay', component: VideoPlay },
+      { path: 'newvideo', name: 'newvideo', component: NewVideo },
+      { path: 'trendingvideo', name: 'trendingvideo', component: TrendingVideo },
+      { path: 'hotvideo', name: 'hotvideo', component: HotVideos },
+      { path: 'search/:keyword', name: 'search', component: SearchVideo },
       { path: 'c/:id', name: 'channel', component: Channel },
       { path: 'a/:id', name: 'activit', component: Activit }
     ]

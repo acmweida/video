@@ -24,7 +24,7 @@
           </a>
         </div>
       </div>
-      <videoslider v-if="hotVideos" v-bind:videosType="hotVideos"></videoslider>
+      <videoslider v-if="hotVideos" v-bind:videosType=1></videoslider>
       <div class="ui divider"></div>
       <div
         v-if="trendingVideos"
@@ -48,7 +48,7 @@
           </a>
         </div>
       </div>
-      <videoslider v-if="trendingVideos" v-bind:videosType="trendingVideos"></videoslider>
+      <videoslider v-if="trendingVideos" v-bind:videosType=2></videoslider>
       <div class="ui divider"></div>
       <div
         v-if="newVideos"
@@ -72,7 +72,7 @@
           </a>
         </div>
       </div>
-      <videoslider v-if="newVideos" v-bind:videosType="newVideos"></videoslider>
+      <videoslider v-if="newVideos" v-bind:videosType=3></videoslider>
       <div class="ui divider"></div>
     </div>
   </main>

@@ -31,7 +31,7 @@ export default {
       this.$router.push("/user/c/" + user.user.account);
     },
     toActive() {
-       var user = Session.get("isLogin");
+       var user = isLoginU();
        if (user) {
          user = JSON.parse(localStorage.getItem("isLogin").toString());
        }

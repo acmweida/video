@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div data-v-0c98c25d class="top-banner"></div>
+    <div class="top-banner"></div>
     <div class="title-line">
       <span class="tit">登录</span>
     </div>

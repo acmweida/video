@@ -14,7 +14,7 @@ import { Video } from "../../collections/collection"
 var carousel = require("owl.carousel");
 export default {
   props: {
-    videosType: String
+    videosType: Number
   },
   data() {
     return {
@@ -27,7 +27,7 @@ export default {
   meteor: {
     $subscribe: {
       // Subscribes to the 'threads' publication with no parameters
-      nawVideos: []
+      videos: []
     },
     videos() {
       let videosArr = Video.find({}).fetch();

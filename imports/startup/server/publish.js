@@ -6,8 +6,13 @@ import {Sub} from '../../api/mongo/db'
 import {Admin} from '../../api/mongo/db'
 import {Comment} from '../../api/mongo/db'
 
-Meteor.publish('nawVideos', function () {
-    var res = Video.find({waive:true,check:1,isdelete:false}, { limit: 25, sort: { createDate: -1 } });
+// Meteor.publish('nawVideos', function () {
+//     var res = Video.find({waive:true,check:1,isdelete:false}, { limit: 25, sort: { createDate: -1 } });
+//     return res;
+// });
+
+Meteor.publish('videos', function () {
+    var res = Video.find({waive:true,check:1,isdelete:false});
     return res;
 });
 
@@ -15,10 +20,10 @@ Meteor.publish('user', function () {
     return  User.find({});
 });
 
-Meteor.publish('hotVideos', function () {
-    var res = Video.find({waive:true,check:1,isdelete:false},{ $sample: { size: 25 } });
-    return res;
-});
+// Meteor.publish('hotVideos', function () {
+//     var res = Video.find({waive:true,check:1,isdelete:false},{ $sample: { size: 25 } });
+//     return res;
+// });
 
 Meteor.publish('videoAll', function () {
     var res = Video.find({});
